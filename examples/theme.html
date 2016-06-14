@@ -45,6 +45,25 @@
     
     draw_pal(d3_rs_theme.presentation10.original, d3_rs_theme.presentation10.dark, d3_rs_theme.presentation10.light);
    
+   
+  function draw_pat(a, b, c) {    
+      var svg = d3_rs_svg.html().margin(0).height(a.length * size).width(3 * size);
+      var demo = d3.select('#pat').call(svg).select(svg.self()).select(svg.child());
+      
+      function present(th, cls, x, fn) {
+        demo.selectAll('.' + cls).data(th).enter()
+            .append('rect').attr('class', cls).attr('x', x * size).attr('y', (d, i) => i * size).attr('width', size).attr('height', size).attr('fill', fn);
+      }
+      
+      present(a, 'orig', 0, (d) => d);
+      present(b, 'mid', 1, (d) => d);
+      present(c, 'lite', 2, (d) => d);
+    }    
+    
+    draw_pat(d3_rs_theme.presentation10.original, d3_rs_theme.presentation10.dark, d3_rs_theme.presentation10.light);
+   
+   
+   
     function animate_crv() {
       var FROM = 50, TO = 200;
       

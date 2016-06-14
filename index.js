@@ -23,3 +23,8 @@ export {
   shadow as shadow,
 } from "./src/filters";
 
+export {
+  angle as angle,
+  patterns as patterns,
+  diagonals as diagonals,
+} from "./src/patterns";

@@ -1,14 +1,15 @@
+
 export const angle = 33.75;
 
 export const patterns = {
     crosshatch1: { ang: 45, w: 4, h: 4, s: 5 },
     crosshatch2: { ang: 45, w: 3, h: 4, s: 5 },
     crosshatch3: { ang: 45, w: 3, h: 3, s: 5 },
-    diagonal1: { ang: RedsiftAngle, w: 5, h: 4, s: 5 },
-    diagonal2: { ang: RedsiftAngle, w: 5, h: 3, s: 5 },
-    diagonal3: { ang: RedsiftAngle, w: 5, h: 2, s: 5 },
+    diagonal1: { ang: angle, w: 5, h: 4, s: 5 },
+    diagonal2: { ang: angle, w: 5, h: 3, s: 5 },
+    diagonal3: { ang: angle, w: 5, h: 2, s: 5 },
     blocks: { ang: 0, w: 3, h: 4, s: 5 },
-    redsift: { ang: RedsiftAngle, w: 3, h: 3, s: 5 }
+    redsift: { ang: angle, w: 3, h: 3, s: 5 }
 }
 
 export function diagonals(defs, id, ang, w, h, s) {
