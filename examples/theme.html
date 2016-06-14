@@ -1,0 +1,72 @@
+<html>
+  <head>
+    <style>
+      
+    div {
+      margin: 1em;
+    }
+
+    </style>    
+  </head>
+  <body>
+    <h3>Palettes</h3>
+    <div id="pal"></div>
+            
+    <h3>Curves, default vs Red Sift custom</h3>
+    <div id="crv"></div>
+                
+    <script src="https://d3js.org/d3.v4.0.0-alpha.35.min.js"></script>
+    <script src="//static.redsift.io/reusable/d3-rs-svg/latest/d3-rs-svg.umd-es2015.min.js"></script>
+    <script src="/d3-rs-theme.umd-es2015.min.js"></script>
+    <script>
+
+    'use strict';
+    var size = 32;    
+     
+    function draw_pal(a, b, c) {    
+      var svg = d3_rs_svg.html().margin(0).height(a.length * size).width(3 * size);
+      var demo = d3.select('#pal').call(svg).select(svg.self()).select(svg.child());
+      
+      function present(th, cls, x, fn) {
+        demo.selectAll('.' + cls).data(th).enter()
+            .append('rect').attr('class', cls).attr('x', x * size).attr('y', (d, i) => i * size).attr('width', size).attr('height', size).attr('fill', fn);
+      }
+      
+      present(a, 'orig', 0, (d) => d);
+      present(b, 'mid', 1, (d) => d);
+      present(c, 'lite', 2, (d) => d);
+    }    
+    
+    draw_pal(d3_rs_theme.presentation10.original, d3_rs_theme.presentation10.dark, d3_rs_theme.presentation10.light);
+   
+    function animate_crv() {
+      var FROM = 50, TO = 200;
+      
+      var svg = d3_rs_svg.html().margin(0).height(300).width(300);
+      var demo = d3.select('#crv').call(svg).select(svg.self()).select(svg.child());
+      
+      var norm = demo.append('rect')
+                      .attr('y', 0).attr('x', FROM)
+                      .attr('width', size).attr('height', size)
+                      .attr('fill', d3_rs_theme.presentation10.original[d3_rs_theme.presentation10.names.green]);
+      
+      var custom = demo.append('rect')
+                      .attr('y', size*2).attr('x', FROM)
+                      .attr('width', size).attr('height', size)
+                      .attr('fill', d3_rs_theme.presentation10.original[d3_rs_theme.presentation10.names.pink]);
+      
+      function animate(v) {
+        norm.transition().attr('x', v);
+        custom.transition().duration(d3_rs_theme.duration).ease(d3_rs_theme.easing()).attr('x', v);
+        
+        setTimeout(animate, 2000, (v > FROM ? FROM : TO))
+      }  
+      
+      animate(200);
+  }
+   
+    animate_crv();
+   
+    </script>
+  </body>
+</html>
