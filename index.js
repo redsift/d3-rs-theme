@@ -19,5 +19,7 @@ export {
   easing as easing
 } from "./src/curves";
 
-
+export {
+  shadow as shadow,
+} from "./src/filters";
 
