@@ -10,11 +10,11 @@
 
 [View @redsift/d3-rs-theme on Codepen](https://....)
 
-![Color palette for charts](https://github.com/redsift/d3-rs-theme/readme/palettes.png)
+![Color palette for charts](https://raw.githubusercontent.com/Redsift/d3-rs-theme/master/readme/palettes.png)
 
-![Color patterns for charts](https://github.com/redsift/d3-rs-theme/readme/patterns.png)
+![Color patterns for charts](https://raw.githubusercontent.com/Redsift/d3-rs-theme/master/readme/patterns.png)
 
-![Curves for charts](https://github.com/redsift/d3-rs-theme/readme/curves.gif)
+![Curves for charts](https://raw.githubusercontent.com/Redsift/d3-rs-theme/master/readme/curves.gif)
 
 ## Acknowledgements
 
