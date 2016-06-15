@@ -196,15 +196,17 @@ export {
 }
 
 // Random color from theme, optionally derived from the input 's'
-export function random(s) {
-  var hash = encode(s);
-  if (hash == null) {
-    hash = Math.floor(Math.random() * COLORS.length);
-  } else {
-    hash = hash % COLORS.length;
+export function random(palette) {
+  return function _random(s) {
+    var hash = encode(s);
+    if (hash == null) {
+      hash = Math.floor(Math.random() * palette.length);
+    } else {
+      hash = hash % palette.length;
+    }
+    
+    return palette[hash];
   }
-  
-  return COLORS[hash];
 }
 
 

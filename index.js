@@ -11,7 +11,8 @@ export {
 
 export {
   presentation10 as presentation10,
-  brand as brand
+  brand as brand,
+  display as display
 } from "./src/palettes";
 
 export {

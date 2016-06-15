@@ -2,7 +2,7 @@
   <head>
     <style>
       
-    div {
+    svg {
       margin: 1em;
     }
 
@@ -18,7 +18,7 @@
     <h3>Curves, default vs Red Sift custom</h3>
     <div id="crv"></div>
                 
-    <h3>Filters</h3>
+    <h3>Filters & Random</h3>
     <div id="flt"></div>                
                 
     <script src="https://d3js.org/d3.v4.0.0-alpha.35.min.js"></script>
@@ -46,21 +46,40 @@
     draw_pal(d3_rs_theme.presentation10.original, d3_rs_theme.presentation10.dark, d3_rs_theme.presentation10.light);
    
    
-  function draw_pat(a, b, c) {    
-      var svg = d3_rs_svg.html().margin(0).height(a.length * size).width(3 * size);
-      var demo = d3.select('#pat').call(svg).select(svg.self()).select(svg.child());
+    function draw_pat(p, o, d, l) {    
+      let val = d3_rs_theme.patterns[p];
       
-      function present(th, cls, x, fn) {
-        demo.selectAll('.' + cls).data(th).enter()
-            .append('rect').attr('class', cls).attr('x', x * size).attr('y', (d, i) => i * size).attr('width', size).attr('height', size).attr('fill', fn);
+      let svg = d3_rs_svg.html(p).margin(0).height(o.length * size).width(3 * size);
+      let root = d3.select('#pat').call(svg).select(svg.self());
+      let demo = root.select(svg.child());
+      
+      function present(th, ath, cls, x) {
+        let patterns = th.map(function(c, i) {
+          let pattern = d3_rs_theme.diagonals(null, d3_rs_theme.patterns[p]);
+          pattern.foreground(c);
+          pattern.background(ath[i]);
+          root.call(pattern);
+          return pattern;
+        });
+        demo.selectAll('.' + cls).data(patterns).enter()
+            .append('rect')
+              .attr('class', cls)
+              .attr('x', x * size)
+              .attr('y', (d, i) => i * size)
+              .attr('width', size)
+              .attr('height', size)
+              .attr('fill', (p) => p.url());
       }
       
-      present(a, 'orig', 0, (d) => d);
-      present(b, 'mid', 1, (d) => d);
-      present(c, 'lite', 2, (d) => d);
+      present(o, l, 'orig', 0);
+      present(d, l, 'mid', 1);
+      present(l, o, 'lite', 2);
     }    
     
-    draw_pat(d3_rs_theme.presentation10.original, d3_rs_theme.presentation10.dark, d3_rs_theme.presentation10.light);
+    let patterns = Object.keys(d3_rs_theme.patterns);
+    patterns.forEach(function (p) {
+      draw_pat(p, d3_rs_theme.presentation10.original, d3_rs_theme.presentation10.dark, d3_rs_theme.presentation10.light);
+    });
    
    
    
@@ -97,11 +116,33 @@
       var shadow = d3_rs_theme.shadow();
 
       var demo = d3.select('#flt').call(svg).call(shadow).select(svg.self()).select(svg.child());
-      demo.append('rect')
+      var square = demo.append('rect')
           .attr('y', 100).attr('x', 100)
           .attr('width', size*2).attr('height', size*2)
           .attr('fill', d3_rs_theme.presentation10.original[d3_rs_theme.presentation10.names.blue])
           .attr('filter', shadow.url());
+      
+      var text = demo.append('text')
+                    .attr('y', 100+size)
+                    .attr('x', 100+size)
+                    .attr('text-anchor', 'middle')
+                    .attr('dominant-baseline', 'central')
+                    .attr('font-size', size)  
+                    .text('R');
+      
+      let rnd = d3_rs_theme.random(d3_rs_theme.presentation10.original.filter((e, i) => i !== d3_rs_theme.presentation10.names.grey)); 
+          
+      function animate() {
+        let v = rnd();
+        square.transition().attr('fill', v);
+        
+        let t = d3_rs_theme.contrasts.white(v) ? d3_rs_theme.display.text.white : d3_rs_theme.display.text.black;        
+        text.transition().attr('fill', t);
+        
+        setTimeout(animate, 2000)
+      }  
+      
+      animate();          
     }
     
     demo_filter();

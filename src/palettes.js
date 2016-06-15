@@ -65,3 +65,13 @@ export const brand = [
     '#e11010', // Red 
     '#07AF2D'  // Green 
 ];    
+
+export const display = { 
+    text : {
+        white: '#ffffff',
+        black: '#262626'
+    },
+    lines : {
+        seperator: '#EFF0F0'
+    } 
+};  

@@ -10,7 +10,7 @@ export function shadow(id) {
         height = 100;
     
     if (id == null) {
-        id = 'shadow-filter-' + COUNT;
+        id = 'filter-shadow-' + COUNT;
         COUNT++;
     }
     
