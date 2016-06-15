@@ -1,5 +1,3 @@
-import { presentation10 as COLORS } from './palettes'; 
-
 const L_TH = 64;
 
 // Start: Adapted from https://github.com/MoOx/color-convert

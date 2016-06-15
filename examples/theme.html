@@ -30,12 +30,16 @@
     var size = 32;    
      
     function draw_pal(a, b, c) {    
-      var svg = d3_rs_svg.html().margin(0).height(a.length * size).width(3 * size);
+      var svg = d3_rs_svg.html().margin(0).width(a.length * size).height(3 * size);
       var demo = d3.select('#pal').call(svg).select(svg.self()).select(svg.child());
       
       function present(th, cls, x, fn) {
         demo.selectAll('.' + cls).data(th).enter()
-            .append('rect').attr('class', cls).attr('x', x * size).attr('y', (d, i) => i * size).attr('width', size).attr('height', size).attr('fill', fn);
+            .append('rect').attr('class', cls)
+            .attr('y', x * size)
+            .attr('x', (d, i) => i * size)
+            .attr('width', size).attr('height', size)
+            .attr('fill', fn);
       }
       
       present(a, 'orig', 0, (d) => d);
@@ -43,7 +47,7 @@
       present(c, 'lite', 2, (d) => d);
     }    
     
-    draw_pal(d3_rs_theme.presentation10.original, d3_rs_theme.presentation10.dark, d3_rs_theme.presentation10.light);
+    draw_pal(d3_rs_theme.presentation10.standard, d3_rs_theme.presentation10.dark, d3_rs_theme.presentation10.light);
    
    
     function draw_pat(p, o, d, l) {    
@@ -78,26 +82,24 @@
     
     let patterns = Object.keys(d3_rs_theme.patterns);
     patterns.forEach(function (p) {
-      draw_pat(p, d3_rs_theme.presentation10.original, d3_rs_theme.presentation10.dark, d3_rs_theme.presentation10.light);
+      draw_pat(p, d3_rs_theme.presentation10.standard, d3_rs_theme.presentation10.dark, d3_rs_theme.presentation10.light);
     });
-   
-   
    
     function animate_crv() {
       var FROM = 50, TO = 200;
       
-      var svg = d3_rs_svg.html().margin(0).height(size*3).width(300);
+      var svg = d3_rs_svg.html().margin(0).height(300).width(300);
       var demo = d3.select('#crv').call(svg).select(svg.self()).select(svg.child());
       
       var norm = demo.append('rect')
                       .attr('y', 0).attr('x', FROM)
-                      .attr('width', size).attr('height', size)
-                      .attr('fill', d3_rs_theme.presentation10.original[d3_rs_theme.presentation10.names.green]);
+                      .attr('width', size).attr('height', size*3)
+                      .attr('fill', d3_rs_theme.presentation10.standard[d3_rs_theme.presentation10.names.green]);
       
       var custom = demo.append('rect')
-                      .attr('y', size*2).attr('x', FROM)
-                      .attr('width', size).attr('height', size)
-                      .attr('fill', d3_rs_theme.presentation10.original[d3_rs_theme.presentation10.names.pink]);
+                      .attr('y', size*3).attr('x', FROM)
+                      .attr('width', size).attr('height', size*3)
+                      .attr('fill', d3_rs_theme.presentation10.standard[d3_rs_theme.presentation10.names.pink]);
       
       function animate(v) {
         norm.transition().attr('x', v);
@@ -119,7 +121,7 @@
       var square = demo.append('rect')
           .attr('y', 100).attr('x', 100)
           .attr('width', size*2).attr('height', size*2)
-          .attr('fill', d3_rs_theme.presentation10.original[d3_rs_theme.presentation10.names.blue])
+          .attr('fill', d3_rs_theme.presentation10.standard[d3_rs_theme.presentation10.names.blue])
           .attr('filter', shadow.url());
       
       var text = demo.append('text')
@@ -130,7 +132,7 @@
                     .attr('font-size', size)  
                     .text('R');
       
-      let rnd = d3_rs_theme.random(d3_rs_theme.presentation10.original.filter((e, i) => i !== d3_rs_theme.presentation10.names.grey)); 
+      let rnd = d3_rs_theme.random(d3_rs_theme.presentation10.standard.filter((e, i) => i !== d3_rs_theme.presentation10.names.grey)); 
           
       function animate() {
         let v = rnd();

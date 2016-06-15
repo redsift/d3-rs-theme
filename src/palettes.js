@@ -1,20 +1,20 @@
 // Informed by the Cagatay Demiralp paper, grey is moved around to break
 // brown and red in this color scheme
 
-const presentation10o = [ 
+const presentation10dark = [ 
     '#00ce5c', // Green
     '#d800a2', // Pink          
     '#00d9d2', // Aqua     
     '#AF5100', // Brown         
     '#bfbfbf', // Grey   
     '#DE0000', // Red     
-    '#FFE000', // Yellow           
+    '#F0DE00', // Yellow           
     '#9200ff', // Purple      
     '#ED9200', // Orange     
     '#00aeff' // Blue 
 ];
 
-const presentation10m = [ 
+const presentation10std = [ 
    
     '#56d58e', // Green
     '#d95cba', // Pink          
@@ -22,13 +22,13 @@ const presentation10m = [
     '#C78348', // Brown         
     '#d6d6d6', // Grey 
     '#E06363', // Red     
-    '#FCEE86', // Yellow           
+    '#FFF741', // Yellow           
     '#965ede', // Purple      
     '#FCBB54', // Orange  
     '#73c5eb' // Blue 
 ];
 
-const presentation10l = [ 
+const presentation10light = [ 
     '#a5e6c3', // Green
     '#eda3da', // Pink          
     '#9af8f4', // Aqua     
@@ -55,9 +55,9 @@ const names10 = {
 }
 
 export const presentation10 = {
-    original: presentation10m,
-    dark: presentation10o,
-    light: presentation10l,
+    standard: presentation10std,
+    dark: presentation10dark,
+    light: presentation10light,
     names: names10    
 }
 

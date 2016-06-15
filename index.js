@@ -21,11 +21,11 @@ export {
 } from "./src/curves";
 
 export {
-  shadow as shadow,
+  shadow as shadow
 } from "./src/filters";
 
 export {
   angle as angle,
   patterns as patterns,
-  diagonals as diagonals,
+  diagonals as diagonals
 } from "./src/patterns";
