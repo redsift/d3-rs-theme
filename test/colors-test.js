@@ -26,18 +26,20 @@ tape("lightness() generates different rbg at 1.1", function(t) {
 
 
 tape("random() generates different bg", function(t) {
+   var rnd = colors.random(colors.presentation10.standard);
    
-    var one = colors.random();
-    var two = colors.random();
+    var one = rnd();
+    var two = rnd();
     
     t.notEqual(one, two);    
     t.end();    
 });   
 
 tape("random() generates same bg", function(t) {
+    var rnd = colors.random(colors.presentation10.standard);
     var VAL = 'some long string';
-    var one = colors.random(VAL);
-    var two = colors.random(VAL);
+    var one = rnd(VAL);
+    var two = rnd(VAL);
     
     t.equal(one, two);    
     t.end();    

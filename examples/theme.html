@@ -2,7 +2,7 @@
   <head>
     <style>
       
-    div {
+    svg {
       margin: 1em;
     }
 
@@ -11,9 +11,15 @@
   <body>
     <h3>Palettes</h3>
     <div id="pal"></div>
+
+    <h3>Patterns</h3>
+    <div id="pat"></div>      
             
     <h3>Curves, default vs Red Sift custom</h3>
     <div id="crv"></div>
+                
+    <h3>Filters & Random</h3>
+    <div id="flt"></div>                
                 
     <script src="https://d3js.org/d3.v4.0.0-alpha.35.min.js"></script>
     <script src="//static.redsift.io/reusable/d3-rs-svg/latest/d3-rs-svg.umd-es2015.min.js"></script>
@@ -24,12 +30,16 @@
     var size = 32;    
      
     function draw_pal(a, b, c) {    
-      var svg = d3_rs_svg.html().margin(0).height(a.length * size).width(3 * size);
+      var svg = d3_rs_svg.html().margin(0).width(a.length * size).height(3 * size);
       var demo = d3.select('#pal').call(svg).select(svg.self()).select(svg.child());
       
       function present(th, cls, x, fn) {
         demo.selectAll('.' + cls).data(th).enter()
-            .append('rect').attr('class', cls).attr('x', x * size).attr('y', (d, i) => i * size).attr('width', size).attr('height', size).attr('fill', fn);
+            .append('rect').attr('class', cls)
+            .attr('y', x * size)
+            .attr('x', (d, i) => i * size)
+            .attr('width', size).attr('height', size)
+            .attr('fill', fn);
       }
       
       present(a, 'orig', 0, (d) => d);
@@ -37,7 +47,43 @@
       present(c, 'lite', 2, (d) => d);
     }    
     
-    draw_pal(d3_rs_theme.presentation10.original, d3_rs_theme.presentation10.dark, d3_rs_theme.presentation10.light);
+    draw_pal(d3_rs_theme.presentation10.standard, d3_rs_theme.presentation10.dark, d3_rs_theme.presentation10.light);
+   
+   
+    function draw_pat(p, o, d, l) {    
+      let val = d3_rs_theme.patterns[p];
+      
+      let svg = d3_rs_svg.html(p).margin(0).height(o.length * size).width(3 * size);
+      let root = d3.select('#pat').call(svg).select(svg.self());
+      let demo = root.select(svg.child());
+      
+      function present(th, ath, cls, x) {
+        let patterns = th.map(function(c, i) {
+          let pattern = d3_rs_theme.diagonals(null, d3_rs_theme.patterns[p]);
+          pattern.foreground(c);
+          pattern.background(ath[i]);
+          root.call(pattern);
+          return pattern;
+        });
+        demo.selectAll('.' + cls).data(patterns).enter()
+            .append('rect')
+              .attr('class', cls)
+              .attr('x', x * size)
+              .attr('y', (d, i) => i * size)
+              .attr('width', size)
+              .attr('height', size)
+              .attr('fill', (p) => p.url());
+      }
+      
+      present(o, l, 'orig', 0);
+      present(d, l, 'mid', 1);
+      present(l, o, 'lite', 2);
+    }    
+    
+    let patterns = Object.keys(d3_rs_theme.patterns);
+    patterns.forEach(function (p) {
+      draw_pat(p, d3_rs_theme.presentation10.standard, d3_rs_theme.presentation10.dark, d3_rs_theme.presentation10.light);
+    });
    
     function animate_crv() {
       var FROM = 50, TO = 200;
@@ -47,13 +93,13 @@
       
       var norm = demo.append('rect')
                       .attr('y', 0).attr('x', FROM)
-                      .attr('width', size).attr('height', size)
-                      .attr('fill', d3_rs_theme.presentation10.original[d3_rs_theme.presentation10.names.green]);
+                      .attr('width', size).attr('height', size*3)
+                      .attr('fill', d3_rs_theme.presentation10.standard[d3_rs_theme.presentation10.names.green]);
       
       var custom = demo.append('rect')
-                      .attr('y', size*2).attr('x', FROM)
-                      .attr('width', size).attr('height', size)
-                      .attr('fill', d3_rs_theme.presentation10.original[d3_rs_theme.presentation10.names.pink]);
+                      .attr('y', size*3).attr('x', FROM)
+                      .attr('width', size).attr('height', size*3)
+                      .attr('fill', d3_rs_theme.presentation10.standard[d3_rs_theme.presentation10.names.pink]);
       
       function animate(v) {
         norm.transition().attr('x', v);
@@ -63,10 +109,46 @@
       }  
       
       animate(200);
-  }
+    }
    
     animate_crv();
-   
+    
+    function demo_filter() {
+      var svg = d3_rs_svg.html().margin(0).height(200).width(200);
+      var shadow = d3_rs_theme.shadow();
+
+      var demo = d3.select('#flt').call(svg).call(shadow).select(svg.self()).select(svg.child());
+      var square = demo.append('rect')
+          .attr('y', 100).attr('x', 100)
+          .attr('width', size*2).attr('height', size*2)
+          .attr('fill', d3_rs_theme.presentation10.standard[d3_rs_theme.presentation10.names.blue])
+          .attr('filter', shadow.url());
+      
+      var text = demo.append('text')
+                    .attr('y', 100+size)
+                    .attr('x', 100+size)
+                    .attr('text-anchor', 'middle')
+                    .attr('dominant-baseline', 'central')
+                    .attr('font-size', size)  
+                    .text('R');
+      
+      let rnd = d3_rs_theme.random(d3_rs_theme.presentation10.standard.filter((e, i) => i !== d3_rs_theme.presentation10.names.grey)); 
+          
+      function animate() {
+        let v = rnd();
+        square.transition().attr('fill', v);
+        
+        let t = d3_rs_theme.contrasts.white(v) ? d3_rs_theme.display.text.white : d3_rs_theme.display.text.black;        
+        text.transition().attr('fill', t);
+        
+        setTimeout(animate, 2000)
+      }  
+      
+      animate();          
+    }
+    
+    demo_filter();
+    
     </script>
   </body>
 </html>

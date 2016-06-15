@@ -11,7 +11,8 @@ export {
 
 export {
   presentation10 as presentation10,
-  brand as brand
+  brand as brand,
+  display as display
 } from "./src/palettes";
 
 export {
@@ -19,5 +20,12 @@ export {
   easing as easing
 } from "./src/curves";
 
+export {
+  shadow as shadow
+} from "./src/filters";
 
-
+export {
+  angle as angle,
+  patterns as patterns,
+  diagonals as diagonals
+} from "./src/patterns";
