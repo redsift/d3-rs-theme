@@ -8,7 +8,7 @@
 
 ## Example
 
-[View @redsift/d3-rs-theme on Codepen](https://....)
+[View @redsift/d3-rs-theme on Codepen](http://codepen.io/rahulpowar/pen/ZOOLGW)
 
 ### Color palette
 
@@ -61,8 +61,9 @@ You can create a theme shadow for SVG elements using `d3_rs_theme.shadow()` in a
 Check text color legibility using the `d3_rs_theme.contrasts.white()` function. It will return false if the color provided will not provide adequate contrast with white text.
 
 	// fill with white or black text depending on the value of color
-        let t = d3_rs_theme.contrasts.white(color) ? d3_rs_theme.display.text.white : d3_rs_theme.display.text.black;        
-        text.attr('fill', t);
+    let t = d3_rs_theme.contrasts.white(color) ? 
+			d3_rs_theme.display.text.white : d3_rs_theme.display.text.black;        
+    text.attr('fill', t);
 
 ## Acknowledgements
 
