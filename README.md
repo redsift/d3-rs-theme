@@ -65,6 +65,25 @@ Check text color legibility using the `d3_rs_theme.contrasts.white()` function. 
 			d3_rs_theme.display.text.white : d3_rs_theme.display.text.black;        
     text.attr('fill', t);
 
+## ES6 Usage
+
+If you are using rollup or a sutable es6 module compatable system, you benefit from tree shaking.
+
+	import { 
+		random as random, 
+		contrasts as contrasts, 
+		presentation10 as presentation10
+	} from '@redsift/d3-rs-theme';
+
+	// make a random theme color function based on the standard presentation10 with grey filtered out. because reasons.
+	let colors = random(presentation10.standard.filter((e, i) => i !== presentation10.names.grey));
+
+	// get a random rgb string
+	let rgb = colors();
+	
+	// get a random color as a function of the string 'hashme'
+	let rgb = colors('hashme');
+
 ## Acknowledgements
 
 This uses code from https://github.com/MoOx/color-convert under MIT
