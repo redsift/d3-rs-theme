@@ -52,3 +52,13 @@ tape("contrasts() correct for the obvious ones", function(t) {
     
     t.end();    
 });
+
+tape("random() generates same bg for a number", function(t) {
+    var rnd = colors.random(colors.presentation10.standard);
+    var VAL = 1;
+    var one = rnd(VAL);
+    var two = rnd(VAL);
+    
+    t.equal(one, two);    
+    t.end();    
+}); 
