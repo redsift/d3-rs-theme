@@ -1,6 +1,6 @@
 {
   "name": "@redsift/d3-rs-theme",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Package for the Red Sift default color palette, curves and patterns.",
   "keywords": [
     "color",
@@ -31,21 +31,21 @@
     "bezier-easing": "^2.0.3"
   },
   "devDependencies": {
-    "tape": "^4.5.1",
+    "tape": "^4.6.0",
     "browser-sync": "^2.13.0",
-    "del": "^2.2.0",
-    "eslint": "^2.10.2",
+    "del": "^2.2.1",
+    "eslint": "^2.13.1",
     "gulp": "^3.9.1",
     "gulp-rename": "^1.2.2",
     "gulp-sourcemaps": "^2.0.0-alpha",
     "gulp-uglify": "^1.5.3",
     "gulp-util": "^3.0.7",
     "json2module": "~0.0.3",
-    "rollup": "^0.31.2",
+    "rollup": "^0.32.0",
     "rollup-plugin-buble": "^0.11.0",
     "rollup-plugin-node-resolve": "^1.5.0",
     "rollup-plugin-commonjs": "^3.0.0",
-    "rollup-stream": "^1.7.1",
+    "rollup-stream": "^1.8.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "yargs": "^4.7.1"
