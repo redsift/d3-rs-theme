@@ -6,6 +6,10 @@
 
 [![Circle CI](https://circleci.com/gh/Redsift/d3-rs-theme.svg?style=svg)](https://circleci.com/gh/Redsift/d3-rs-theme)
 
+## Script Import
+
+`//static.redsift.io/reusable/d3-rs-theme/latest/d3-rs-theme.umd-es2015.min.js`
+
 ## Example
 
 [View @redsift/d3-rs-theme on Codepen](http://codepen.io/rahulpowar/pen/ZOOLGW)
