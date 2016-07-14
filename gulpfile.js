@@ -19,7 +19,7 @@ var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var rename = require('gulp-rename');
 var commonjs = require('rollup-plugin-commonjs');
-
+var json = require('rollup-plugin-json');
 
 var outputFilename = argv.o;
 var globals = [];
@@ -52,7 +52,12 @@ gulp.task('umd', task.umd = () => {
             entry: 'index.js',
             format: 'umd',
             sourceMap: true,
-            plugins: [  nodeResolve({
+            plugins: [  
+                        json({
+                            include: [ '**/package.json' , 'node_modules/**/*.json' ], 
+                            exclude: [  ]
+                        }),
+                        nodeResolve({
                             // use "jsnext:main" if possible
                             // – see https://github.com/rollup/rollup/wiki/jsnext:main
                             jsnext: true,  // Default: false
@@ -75,7 +80,7 @@ gulp.task('umd', task.umd = () => {
                             browser: true,  // Default: false
 
                             // not all files you want to resolve are .js files
-                            extensions: [ '.js', '.json' ],  // Default: ['.js']
+                            extensions: [ '.js' ],  // Default: ['.js']
 
                             // whether to prefer built-in modules (e.g. `fs`, `path`) or
                             // local ones with the same names

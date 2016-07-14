@@ -1,15 +1,17 @@
+import { display } from './palettes'
 
 export const angle = 33.75;
 
 export const patterns = {
-    diagonal1: { a: angle, w: 5, h: 4, s: 5 },
-    diagonal2: { a: angle, w: 5, h: 2, s: 5 },
-    diagonal3: { a: angle, w: 5, h: 3, s: 5 },
-    crosshatch1: { a: 45, w: 4, h: 4, s: 5 },
-    crosshatch2: { a: 45, w: 3, h: 4, s: 5 },
-    crosshatch3: { a: 45, w: 3, h: 3, s: 5 },
-    blocks: { a: 0, w: 3, h: 4, s: 5 },
-    redsift: { a: angle, w: 3, h: 3, s: 5 }
+    diagonal1: { angle: angle, width: 5, height: 4, size: 5 },
+    diagonal2: { angle: angle, width: 5, height: 2, size: 5 },
+    diagonal3: { angle: angle, width: 5, height: 3, size: 5 },
+    crosshatch1: { angle: 45, width: 4, height: 4, size: 5 },
+    crosshatch2: { angle: 45, width: 3, height: 4, size: 5 },
+    crosshatch3: { angle: 45, width: 3, height: 3, size: 5 },
+    highlight: { angle: 45, width: 3, height: 3, size: 6, interval: 4 },
+    blocks: { angle: 0, width: 3, height: 4, size: 5 },
+    redsift: { angle: angle, width: 3, height: 3, size: 5 }
 }
 
 let COUNT = 1;
@@ -17,13 +19,14 @@ let COUNT = 1;
 export function diagonals(id, opts) {
     if (opts == null) opts = {};
     
-    let s = opts.s || 4;
-    let w = opts.w || 3;
-    let h = opts.h || 3;
-    let a = opts.a || 45;
+    let s = opts.size || 4;
+    let w = opts.width || 3;
+    let h = opts.height || 3;
+    let a = opts.angle || 45;
+    let i = opts.interval || 4;
     
     let background = 'transparent',
-        foreground = 'rgba(0,0,0,0.1)';
+        foreground = display.light.highlight;
     
     if (id == null) {
         id = 'pattern-diagonals-' + COUNT;
@@ -45,23 +48,21 @@ export function diagonals(id, opts) {
                     .attr('patternUnits', 'userSpaceOnUse');    
                     
             pattern.append('rect')
-                .attr('class', 'background');
+                .attr('class', 'pattern-background');
             
             pattern.append('rect')
-                .attr('class', 'foreground')
-                .attr('transform', 'translate(0,0)');                        
+                .attr('class', 'pattern-foreground');                        
         }
-                                
         pattern.attr('width', s)
                 .attr('height', s)
-                .attr('patternTransform', 'rotate('+ a + ')');
+                .attr('patternTransform', `translate(${w*Math.sin(a * (Math.PI / 180))},0),rotate(${a})`); // translation ensure rects are correct
 
-        pattern.select('rect.background')
+        pattern.select('rect.pattern-background')
                 .attr('width', s)
                 .attr('height', s)
                 .attr('fill', background);
 
-        pattern.select('rect.foreground')
+        pattern.select('rect.pattern-foreground')
                 .attr('width', w)
                 .attr('height', h)
                 .attr('fill', foreground);
@@ -79,19 +80,23 @@ export function diagonals(id, opts) {
     // .css() can be used with style on a SVG component
     _impl.css = function() { return 'fill: ' + _impl.url() + ';'; }
     
-    _impl.s = function(value) {
+    _impl.size = function(value) {
         return arguments.length ? (s = value, _impl) : s;
     };  
+
+    _impl.interval = function(value) {
+        return arguments.length ? (i = value, _impl) : i;
+    };       
       
-    _impl.w = function(value) {
+    _impl.width = function(value) {
         return arguments.length ? (w = value, _impl) : w;
     };
      
-    _impl.h = function(value) {
+    _impl.height = function(value) {
         return arguments.length ? (h = value, _impl) : h;
     };
      
-    _impl.a = function(value) {
+    _impl.angle = function(value) {
         return arguments.length ? (a = value, _impl) : a;
     };
     
