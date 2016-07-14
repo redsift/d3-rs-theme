@@ -9,8 +9,20 @@
     </style>    
   </head>
   <body>
-    <h3>Palettes</h3>
+    <h3>Fonts</h3>
+    <div id="fon"></div>  
+
+    <h3>Stroke</h3>
+    <div id="str"></div>  
+
+    <h3>Brand Palettes</h3>
+    <div id="bra"></div>
+    
+    <h3>Presentation Palettes</h3>
     <div id="pal"></div>
+
+    <h3>Presentation Palettes & Highlights</h3>
+    <div id="hal"></div>
 
     <h3>Patterns</h3>
     <div id="pat"></div>      
@@ -28,28 +40,125 @@
 
     'use strict';
     var size = 32;    
-     
-    function draw_pal(a, b, c) {    
-      var svg = d3_rs_svg.html().margin(0).width(a.length * size).height(3 * size);
-      var demo = d3.select('#pal').call(svg).select(svg.self()).select(svg.child());
+    var themes = d3_rs_theme.themes;
+    
+    function draw_fonts(width) {
+       var svg = d3_rs_svg.html('width-' + width)
+                    .width(width)
+                    .height(300)
+                    .margin(30)
+                    .background(d3_rs_theme.display.light.background);
+                    
+       svg.style([
+                  d3_rs_theme.fontImportFixed,
+                  d3_rs_theme.fontImportVariable,   
+                  d3_rs_theme.fontImportBrand,  
+                  `${svg.self()} text { font-weight: ${d3_rs_theme.fontWeightMonochrome}; fill: ${d3_rs_theme.display.light.text}; font-size: ${d3_rs_theme.fontSizeForWidth(width)} }`,   
+                  `${svg.self()} text.color { font-weight: ${d3_rs_theme.fontWeightColor}; fill: ${d3_rs_theme.presentation10.standard[d3_rs_theme.presentation10.names.aqua]} }`,   
+                  `${svg.self()} text.fixed { font-family: ${d3_rs_theme.fontFamilyFixedWidth}  }`,                
+                  `${svg.self()} text.variable { font-family: ${d3_rs_theme.fontFamilyVariableWidth} }`,      
+                  `${svg.self()} text.brand { font-family: ${d3_rs_theme.fontFamilyBrand} }`  
+                ].join('\n'));
+       
+       var node = d3.select('#fon').call(svg).select(svg.self()).select(svg.child());
+       
+       node.append('text').attr('class', 'fixed').attr('y', 0).text('Fixed');
+       node.append('text').attr('class', 'variable').attr('y', 50).text('Variable');
+       node.append('text').attr('class', 'brand').attr('y', 100).text('Brand');
+       
+       node.append('text').attr('class', 'fixed color').attr('y', 150).text('Fixed');
+       node.append('text').attr('class', 'variable color').attr('y', 200).text('Variable');
+       node.append('text').attr('class', 'brand color').attr('y', 250).text('Brand');
+    }
+    [200, 700].map(draw_fonts);
+
+    function draw_strokes(theme) {
+       var svg = d3_rs_svg.html('theme-' + theme)
+                    .width(410)
+                    .height(350)
+                    .background(d3_rs_theme.display[theme].background);
+                    
+       svg.style([
+                  d3_rs_theme.fontImportVariable,   
+                  `${svg.self()} text { font-family: ${d3_rs_theme.fontFamilyVariableWidth}; fill: ${d3_rs_theme.display[theme].text};  }`,   
+                  `${svg.self()} line { shape-rendering: crispEdges; fill: none; stroke: black }`,   
+                  `${svg.self()} line.data { stroke: ${d3_rs_theme.presentation10.standard[d3_rs_theme.presentation10.names.pink]}; stroke-width: ${d3_rs_theme.dataWidth} }`,  
+                  `${svg.self()} line.axis { stroke: ${d3_rs_theme.display[theme].axis}; stroke-width: ${d3_rs_theme.axisWidth} }`,   
+                  `${svg.self()} line.grid { stroke: ${d3_rs_theme.display[theme].grid}; stroke-width: ${d3_rs_theme.gridWidth}; stroke-dasharray: ${d3_rs_theme.gridDash}  }`,   
+                  `${svg.self()} rect.highlight { stroke: none;}`
+                ].join('\n'));
+                
+       var pattern = d3_rs_theme.diagonals('pattern-' + theme, d3_rs_theme.patterns.highlight);
+       pattern.foreground(d3_rs_theme.display[theme].highlight);
+       
+       var node = d3.select('#str').call(svg).select(svg.self()).call(pattern).select(svg.child());
+       
+       function draw(d, i) {
+        var g = node.append('g').attr('transform', `translate(0, ${i * 50 + 20})`)
+        g.append('text').attr('dominant-baseline', 'text-after-edge').text(d);     
+        if (d === 'highlight x') {
+          g.append('rect').attr('class', d).attr('x', 0).attr('y', 0).attr('width', svg.childWidth()).attr('height', pattern.interval()).attr('fill', pattern.url());
+        } else if (d === 'highlight y') {
+          g.append('rect').attr('class', d).attr('x', 0).attr('y', 0).attr('width', pattern.interval()).attr('height', 4 * pattern.size()).attr('fill', pattern.url());
+        } else if (d === 'highlight area') {
+          g.append('rect').attr('class', d).attr('x', 0).attr('y', 0).attr('width', svg.childWidth()).attr('height', 50).attr('fill', pattern.url());
+        } else { 
+          g.append('line').attr('class', d).attr('x1', 0).attr('y1', 0).attr('x2', svg.childWidth()).attr('y2', 0);
+        } 
+      }
+       
+       [ 'data', 'axis', 'grid', 'highlight x', 'highlight y', 'highlight area' ].map(draw);
+    }
+    
+    themes.map(draw_strokes);
+    
+    
+    function draw_pal(node, theme, series) {    
+
+    let palHeight = (series.length + 1) * size;
+    let palWidth = d3.max(series, s => s.length) * size + 30;
+
+      var svg = d3_rs_svg.html(`${node}-${theme}`)
+                .width(palWidth)
+                .height(palHeight)
+                .background(d3_rs_theme.display[theme].background);
+      var demo = d3.select(`#${node}`).call(svg).select(svg.self()).select(svg.child());
       
-      function present(th, cls, x, fn) {
+      function present(th, x) {
+        let cls = 'class-' + x;
         demo.selectAll('.' + cls).data(th).enter()
             .append('rect').attr('class', cls)
             .attr('y', x * size)
             .attr('x', (d, i) => i * size)
             .attr('width', size).attr('height', size)
-            .attr('fill', fn);
+            .attr('fill', (d) => d);
       }
+
+      series.map(present);
       
-      present(a, 'orig', 0, (d) => d);
-      present(b, 'mid', 1, (d) => d);
-      present(c, 'lite', 2, (d) => d);
+      return svg;
     }    
+
+    themes.map(t => draw_pal( 'bra', t, [ d3_rs_theme.brand.standard, 
+                                      d3_rs_theme.brand.darker ] )
+                            );
     
-    draw_pal(d3_rs_theme.presentation10.standard, d3_rs_theme.presentation10.dark, d3_rs_theme.presentation10.light);
+    themes.map(t => draw_pal( 'pal', t, [ d3_rs_theme.presentation10.standard, 
+                                      d3_rs_theme.presentation10.darker, 
+                                      d3_rs_theme.presentation10.lighter ] )
+                            );
    
-   
+    let containers = themes.map(t => draw_pal( 'hal', t, [ d3_rs_theme.presentation10.standard, 
+                                      d3_rs_theme.presentation10.darker, 
+                                      d3_rs_theme.presentation10.lighter ] )
+                            );
+                            
+    d3.select('#hal').selectAll('svg').data(themes)
+      .append('rect')
+        .attr('fill', d => `url(#pattern-${d})`)
+        .attr('width', (d, i) => containers[i].width())
+        .attr('height', (d, i) => containers[i].height());                        
+                               
     function draw_pat(p, o, d, l) {    
       let val = d3_rs_theme.patterns[p];
       
@@ -82,7 +191,7 @@
     
     let patterns = Object.keys(d3_rs_theme.patterns);
     patterns.forEach(function (p) {
-      draw_pat(p, d3_rs_theme.presentation10.standard, d3_rs_theme.presentation10.dark, d3_rs_theme.presentation10.light);
+      draw_pat(p, d3_rs_theme.presentation10.standard, d3_rs_theme.presentation10.darker, d3_rs_theme.presentation10.lighter);
     });
    
     function animate_crv() {
@@ -113,11 +222,20 @@
    
     animate_crv();
     
-    function demo_filter() {
-      var svg = d3_rs_svg.html().margin(0).height(200).width(200);
-      var shadow = d3_rs_theme.shadow();
+    function demo_filter(theme) {
+      var svg = d3_rs_svg.html('filter-' + theme)
+              .height(200)
+              .width(200)
+              .background(d3_rs_theme.display[theme].background);
+      
+      svg.style([
+                  d3_rs_theme.fontImportBrand,   
+                  `${svg.self()} text { font-family: ${d3_rs_theme.fontFamilyBrand};  }`,   
+                ].join('\n'));
+      
+      var shadow = d3_rs_theme.shadow().color(d3_rs_theme.display[theme].shadow);
 
-      var demo = d3.select('#flt').call(svg).call(shadow).select(svg.self()).select(svg.child());
+      var demo = d3.select('#flt').call(svg).select(svg.self()).call(shadow).select(svg.child());
       var square = demo.append('rect')
           .attr('y', 100).attr('x', 100)
           .attr('width', size*2).attr('height', size*2)
@@ -138,7 +256,7 @@
         let v = rnd();
         square.transition().attr('fill', v);
         
-        let t = d3_rs_theme.contrasts.white(v) ? d3_rs_theme.display.text.white : d3_rs_theme.display.text.black;        
+        let t = d3_rs_theme.contrasts.white(v) ? d3_rs_theme.display.dark.text : d3_rs_theme.display.light.text;        
         text.transition().attr('fill', t);
         
         setTimeout(animate, 2000)
@@ -147,7 +265,7 @@
       animate();          
     }
     
-    demo_filter();
+    themes.map(demo_filter);
     
     </script>
   </body>

@@ -56,22 +56,55 @@ const names10 = {
 
 export const presentation10 = {
     standard: presentation10std,
-    dark: presentation10dark,
-    light: presentation10light,
+    darker: presentation10dark,
+    lighter: presentation10light,
     names: names10    
 }
 
-export const brand = [ 
-    '#e11010', // Red 
-    '#07AF2D'  // Green 
-];    
+const brandstd = [
+    '#e11010', // red
+    '#0ab93a', // green
+    '#1671f4', // blue
+    '#cacaca'  // grey
+]
+
+const branddark = [
+    '#6a0000', // red
+    '#087927', // green
+    '#0b49a2', // blue
+    '#828282'  // grey
+]
+
+const namesbrand = {
+    red:    0,
+    green:  1,
+    blue:   2,        
+    grey:   3
+}
+
+export const brand = { 
+    standard: brandstd, 
+    darker: branddark,
+    names: namesbrand 
+} 
+
+export const themes = [ 'light', 'dark' ];   
 
 export const display = { 
-    text : {
-        white: '#ffffff',
-        black: '#262626'
+    light : {
+        background: '#ffffff',
+        text: '#262626',
+        axis: '#262626',
+        grid: '#d1d1d1',
+        highlight: 'rgba(127,127,127,0.5)',
+        shadow: 'rgba(127,127,127,0.4)'
     },
-    lines : {
-        seperator: '#EFF0F0'
-    } 
-};  
+    dark : {
+        background: '#333333',    
+        text: '#ffffff',
+        axis: '#ffffff',
+        grid: '#6d6d6d',
+        highlight: 'rgba(127,127,127,0.5)',
+        shadow: 'rgba(255,255,255,0.4)'      
+    }
+};

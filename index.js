@@ -1,6 +1,6 @@
 export {
   version
-} from "./package.js";
+} from "./package.json"
 
 export {
   transform as transform,
@@ -10,6 +10,7 @@ export {
 } from "./src/colors";
 
 export {
+  themes as themes,
   presentation10 as presentation10,
   brand as brand,
   display as display
@@ -29,3 +30,23 @@ export {
   patterns as patterns,
   diagonals as diagonals
 } from "./src/patterns";
+
+export {
+  dataWidth as dataWidth,
+  axisWidth as axisWidth,
+  gridWidth as gridWidth,
+  gridDash as gridDash
+} from "./src/stroke";
+
+
+export {
+  importFixed as fontImportFixed,
+  importVariable as fontImportVariable,
+  importBrand as fontImportBrand,
+  familyFixedWidth as fontFamilyFixedWidth,
+  familyVariableWidth as fontFamilyVariableWidth,
+  familyBrand as fontFamilyBrand,
+  weightMonochrome as fontWeightMonochrome,
+  weightColor as fontWeightColor,
+  sizeForWidth as fontSizeForWidth
+} from "./src/fonts";

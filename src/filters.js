@@ -1,9 +1,11 @@
+import { display } from './palettes'
+
 let COUNT = 1;
 
 export function shadow(id) {
     
     let morphRadius = 1,
-        colour = 'rgba(127,127,127,0.4)',
+        color = display.light.shadow,
         blurRadius = 3,
         padding = "10px",
         width = 100,
@@ -60,7 +62,7 @@ export function shadow(id) {
             .attr('radius', morphRadius);
 
         filter.select('feFlood')    
-            .attr('flood-color', colour)
+            .attr('flood-color', color)
 
         filter.select('feGaussianBlur')
             .attr('stdDeviation', blurRadius);
@@ -82,8 +84,8 @@ export function shadow(id) {
         return arguments.length ? (morphRadius = value, _impl) : morphRadius;
     };
     
-    _impl.colour = function(value) {
-        return arguments.length ? (colour = value, _impl) : colour;
+    _impl.color = function(value) {
+        return arguments.length ? (color = value, _impl) : color;
     };
     
     _impl.blurRadius = function(value) {
