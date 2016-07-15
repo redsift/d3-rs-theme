@@ -95,9 +95,10 @@ export const display = {
         background: '#ffffff',
         text: '#262626',
         axis: '#262626',
-        grid: '#d1d1d1',
-        highlight: 'rgba(127,127,127,0.5)',
-        shadow: 'rgba(127,127,127,0.4)'
+        grid: '#e0e0e0',
+        highlight: 'rgba(127,127,127,0.3)',
+        shadow: 'rgba(127,127,127,0.4)',
+        fillOpacity: 0.33
     },
     dark : {
         background: '#333333',    
@@ -105,6 +106,7 @@ export const display = {
         axis: '#ffffff',
         grid: '#6d6d6d',
         highlight: 'rgba(127,127,127,0.5)',
-        shadow: 'rgba(255,255,255,0.4)'      
+        shadow: 'rgba(255,255,255,0.4)',
+        fillOpacity: 0.33      
     }
 };

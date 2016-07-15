@@ -80,9 +80,9 @@ A specific `highlight` pattern is provided to draw area markers. It can also be 
 
 ![Lines on light and dark](https://raw.githubusercontent.com/Redsift/d3-rs-theme/master/readme/lines.png)
 
-A number of line styles are provided for data presentation. Colors are under `d3_rs_theme.display[theme].axis|grid` and the stroke thicknesses are `d3_rs_theme.dataWidth`, `d3_rs_theme.axisWidth` and `d3_rs_theme.gridWidth`. Additionally the grid line has a dash style that is applied to the style attribute `stroke-dasharray` under `d3_rs_theme.gridDash`.
+A number of line styles are provided for data presentation. Colors are under `d3_rs_theme.display[theme].axis|grid` and the stroke thicknesses are `d3_rs_theme.widths.data`, `d3_rs_theme.widths.axis` and `d3_rs_theme.widths.grid`. Additionally the grid line has a dash style that is applied to the style attribute `stroke-dasharray` under `d3_rs_theme.dashes.grid`.
 
-Remember to use the CSS style `shape-rendering: crispEdges` for lines and paths.
+Remember to use the CSS style `shape-rendering: crispEdges` for lines and paths that you know are *straight* e.g. grids and axis lines.
 	
 
 ### Fonts
@@ -93,8 +93,8 @@ Fixed width, variable width and brand fonts are provided with sane fallbacks. Us
 	
 	let svg = d3_rs_svg.html()...;
     svg.style([
-              d3_rs_theme.fontImportVariable,   
-              `${svg.self()} text { font-family: ${d3_rs_theme.fontFamilyVariableWidth}; fill: ${d3_rs_theme.display[theme].text};  }`
+              d3_rs_theme.fonts.variable.cssImport,   
+              `${svg.self()} text { font-family: ${d3_rs_theme.fonts.variable.family}; fill: ${d3_rs_theme.display[theme].text};  }`
             ].join('\n'));
             
 Font sizes are calculated based on the available SVG width via the function `fontSizeForWidth()`.            

@@ -50,14 +50,27 @@
                     .background(d3_rs_theme.display.light.background);
                     
        svg.style([
-                  d3_rs_theme.fontImportFixed,
-                  d3_rs_theme.fontImportVariable,   
-                  d3_rs_theme.fontImportBrand,  
-                  `${svg.self()} text { font-weight: ${d3_rs_theme.fontWeightMonochrome}; fill: ${d3_rs_theme.display.light.text}; font-size: ${d3_rs_theme.fontSizeForWidth(width)} }`,   
-                  `${svg.self()} text.color { font-weight: ${d3_rs_theme.fontWeightColor}; fill: ${d3_rs_theme.presentation10.standard[d3_rs_theme.presentation10.names.aqua]} }`,   
-                  `${svg.self()} text.fixed { font-family: ${d3_rs_theme.fontFamilyFixedWidth}  }`,                
-                  `${svg.self()} text.variable { font-family: ${d3_rs_theme.fontFamilyVariableWidth} }`,      
-                  `${svg.self()} text.brand { font-family: ${d3_rs_theme.fontFamilyBrand} }`  
+                  d3_rs_theme.fonts.fixed.cssImport,
+                  d3_rs_theme.fonts.variable.cssImport,   
+                  d3_rs_theme.fonts.brand.cssImport,  
+                  `${svg.self()} text {  
+                                        fill: ${d3_rs_theme.display.light.text}; 
+                                       }`,   
+                  `${svg.self()} text.color { 
+                                              fill: ${d3_rs_theme.presentation10.standard[d3_rs_theme.presentation10.names.aqua]} 
+                                            }`,   
+                  `${svg.self()} text.fixed { font-family: ${d3_rs_theme.fonts.fixed.family};
+                                              font-weight: ${d3_rs_theme.fonts.fixed.weightMonochrome};  
+                                              font-size: ${d3_rs_theme.fonts.fixed.sizeForWidth(width)};
+                                            }`,                
+                  `${svg.self()} text.variable { font-family: ${d3_rs_theme.fonts.variable.family};
+                                              font-weight: ${d3_rs_theme.fonts.variable.weightMonochrome};  
+                                              font-size: ${d3_rs_theme.fonts.variable.sizeForWidth(width)};
+                                            }`,       
+                  `${svg.self()} text.brand { font-family: ${d3_rs_theme.fonts.brand.family};
+                                              font-weight: ${d3_rs_theme.fonts.brand.weightMonochrome};  
+                                              font-size: ${d3_rs_theme.fonts.brand.sizeForWidth(width)};
+                                            }`,   
                 ].join('\n'));
        
        var node = d3.select('#fon').call(svg).select(svg.self()).select(svg.child());
@@ -79,12 +92,12 @@
                     .background(d3_rs_theme.display[theme].background);
                     
        svg.style([
-                  d3_rs_theme.fontImportVariable,   
-                  `${svg.self()} text { font-family: ${d3_rs_theme.fontFamilyVariableWidth}; fill: ${d3_rs_theme.display[theme].text};  }`,   
+                  d3_rs_theme.fonts.variable.cssImport, 
+                  `${svg.self()} text { font-family: ${d3_rs_theme.fonts.variable.family}; fill: ${d3_rs_theme.display[theme].text};  }`,   
                   `${svg.self()} line { shape-rendering: crispEdges; fill: none; stroke: black }`,   
-                  `${svg.self()} line.data { stroke: ${d3_rs_theme.presentation10.standard[d3_rs_theme.presentation10.names.pink]}; stroke-width: ${d3_rs_theme.dataWidth} }`,  
-                  `${svg.self()} line.axis { stroke: ${d3_rs_theme.display[theme].axis}; stroke-width: ${d3_rs_theme.axisWidth} }`,   
-                  `${svg.self()} line.grid { stroke: ${d3_rs_theme.display[theme].grid}; stroke-width: ${d3_rs_theme.gridWidth}; stroke-dasharray: ${d3_rs_theme.gridDash}  }`,   
+                  `${svg.self()} line.data { stroke: ${d3_rs_theme.presentation10.standard[d3_rs_theme.presentation10.names.pink]}; stroke-width: ${d3_rs_theme.widths.data} }`,  
+                  `${svg.self()} line.axis { stroke: ${d3_rs_theme.display[theme].axis}; stroke-width: ${d3_rs_theme.widths.axis} }`,   
+                  `${svg.self()} line.grid { stroke: ${d3_rs_theme.display[theme].grid}; stroke-width: ${d3_rs_theme.widths.grid}; stroke-dasharray: ${d3_rs_theme.dashes.grid}  }`,   
                   `${svg.self()} rect.highlight { stroke: none;}`
                 ].join('\n'));
                 
@@ -97,9 +110,9 @@
         var g = node.append('g').attr('transform', `translate(0, ${i * 50 + 20})`)
         g.append('text').attr('dominant-baseline', 'text-after-edge').text(d);     
         if (d === 'highlight x') {
-          g.append('rect').attr('class', d).attr('x', 0).attr('y', 0).attr('width', svg.childWidth()).attr('height', pattern.interval()).attr('fill', pattern.url());
+          g.append('rect').attr('class', d).attr('x', 0).attr('y', 10.5).attr('width', svg.childWidth()).attr('height', pattern.interval()).attr('fill', pattern.url());
         } else if (d === 'highlight y') {
-          g.append('rect').attr('class', d).attr('x', 0).attr('y', 0).attr('width', pattern.interval()).attr('height', 4 * pattern.size()).attr('fill', pattern.url());
+          g.append('rect').attr('class', d).attr('x', 10).attr('y', 0).attr('width', pattern.interval()).attr('height', 4 * pattern.size()).attr('fill', pattern.url());
         } else if (d === 'highlight area') {
           g.append('rect').attr('class', d).attr('x', 0).attr('y', 0).attr('width', svg.childWidth()).attr('height', 50).attr('fill', pattern.url());
         } else { 
@@ -229,8 +242,8 @@
               .background(d3_rs_theme.display[theme].background);
       
       svg.style([
-                  d3_rs_theme.fontImportBrand,   
-                  `${svg.self()} text { font-family: ${d3_rs_theme.fontFamilyBrand};  }`,   
+                  d3_rs_theme.fonts.brand.cssImport,  
+                  `${svg.self()} text { font-family: ${d3_rs_theme.fonts.brand.family};  }`,   
                 ].join('\n'));
       
       var shadow = d3_rs_theme.shadow().color(d3_rs_theme.display[theme].shadow);

@@ -1,7 +1,10 @@
-export const dataWidth = '2.5px';
+export const widths = {
+    outline: 0.5,
+    data: 2.5,
+    axis: 1.0,
+    grid: 2.0
+}
 
-export const axisWidth = '1.0px';
-
-export const gridWidth = '2.0px';
-
-export const gridDash = '2,2';
+export const dashes = {
+    grid: '2,2'
+}

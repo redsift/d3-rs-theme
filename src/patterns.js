@@ -9,7 +9,7 @@ export const patterns = {
     crosshatch1: { angle: 45, width: 4, height: 4, size: 5 },
     crosshatch2: { angle: 45, width: 3, height: 4, size: 5 },
     crosshatch3: { angle: 45, width: 3, height: 3, size: 5 },
-    highlight: { angle: 45, width: 3, height: 3, size: 6, interval: 4 },
+    highlight: { angle: 45, width: 4, height: 4, size: 6, interval: 4 },
     blocks: { angle: 0, width: 3, height: 4, size: 5 },
     redsift: { angle: angle, width: 3, height: 3, size: 5 }
 }
