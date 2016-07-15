@@ -32,21 +32,11 @@ export {
 } from "./src/patterns";
 
 export {
-  dataWidth as dataWidth,
-  axisWidth as axisWidth,
-  gridWidth as gridWidth,
-  gridDash as gridDash
+  widths as widths,
+  dashes as dashes
 } from "./src/stroke";
 
 
 export {
-  importFixed as fontImportFixed,
-  importVariable as fontImportVariable,
-  importBrand as fontImportBrand,
-  familyFixedWidth as fontFamilyFixedWidth,
-  familyVariableWidth as fontFamilyVariableWidth,
-  familyBrand as fontFamilyBrand,
-  weightMonochrome as fontWeightMonochrome,
-  weightColor as fontWeightColor,
-  sizeForWidth as fontSizeForWidth
+  fonts as fonts
 } from "./src/fonts";
