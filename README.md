@@ -60,20 +60,21 @@ In addition to colors, the theme module has build in generators for SVG patterns
 
 ![Highlight on light and dark](https://raw.githubusercontent.com/Redsift/d3-rs-theme/master/readme/highlight.png)
 
-A specific `highlight` pattern is provided to draw area markers. It can also be used to draw a line marker.
+A specific `highlight` pattern is provided to draw area markers. It can also be used to draw a line marker. Highlights have additional support for pattern alignment so alighment is ensured at the origin.
 
-	let pattern = d3_rs_theme.diagonals('pattern-' + theme, d3_rs_theme.patterns.highlight);
-    pattern.foreground(d3_rs_theme.display[theme].highlight);
-    
-    d3.select('body').call(svg).select(svg.self()).call(pattern);
+`align()` should be used to ensure the width and height sizes also meet these pattern boundaries.
+
+	let highlight = d3_rs_theme.highlights('highlight-' + theme);
+	highlight.foreground(d3_rs_theme.display[theme].highlight);
+
+    d3.select('body').call(svg).select(svg.self()).call(highlight);
     
     .....
 	
-	
 	..append('rect')
-		.attr('fill', pattern.url()), // get the reference for the fill
-		.attr('width', pattern.interval()) // size the width by the central setting
-		.attr('height', 4 * pattern.size()); // size the height by a multiple of the pattern size
+		.attr('fill', highlight.url()), // get the reference for the fill
+		.attr('width', highlight.align(svg.childWidth())) // size the width to the svg with align
+		.attr('height', highlight.align(1)); // size the height to the minimum pattern size
 
 
 ### Lines

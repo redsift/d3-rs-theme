@@ -9,12 +9,112 @@ export const patterns = {
     crosshatch1: { angle: 45, width: 4, height: 4, size: 5 },
     crosshatch2: { angle: 45, width: 3, height: 4, size: 5 },
     crosshatch3: { angle: 45, width: 3, height: 3, size: 5 },
-    highlight: { angle: 45, width: 4, height: 4, size: 6, interval: 4 },
     blocks: { angle: 0, width: 3, height: 4, size: 5 },
     redsift: { angle: angle, width: 3, height: 3, size: 5 }
 }
 
 let COUNT = 1;
+
+export function highlights(id) {
+
+    const sz = 8, // size of pattern
+          a = 45, // angle of pattern
+          sq = 5; // size of square
+
+    const o = (sz - sq) / 2;
+    const s = 2 * Math.sqrt(sz);
+
+    let background = 'transparent',
+        foreground = display.light.highlight;
+    
+    if (id == null) {
+        id = 'pattern-diagonals-' + COUNT;
+        COUNT++;
+    }
+            
+    function _impl(context) {
+        let selection = context.selection ? context.selection() : context;
+        
+        let defs = selection.select('defs');
+        if (defs.empty()) {
+            defs = selection.append('defs');
+        }
+        
+        let inner = `${id}-inner`;
+
+        let pinner = defs.select(`#${inner}`);
+        if (pinner.empty()) {
+            pinner = defs.append('pattern')
+                    .attr('id', inner)
+                    .attr('x', 0)
+                    .attr('y', 0)
+                    .attr('patternUnits', 'userSpaceOnUse');    
+            
+            pinner.append('rect');
+        }
+
+        pinner.attr('width', sz)
+                .attr('height', sz)
+                .attr('patternTransform', `rotate(${a})`);
+        
+        pinner.select('rect')
+                .attr('x', o)
+                .attr('y', o)
+                .attr('width', sq)
+                .attr('height', sq)
+                .attr('fill', foreground);
+
+        let pattern = defs.select(_impl.self());
+        if (pattern.empty()) {
+            pattern = defs.append('pattern')
+                    .attr('id', id)
+                    .attr('x', 0)
+                    .attr('y', 0)
+                    .attr('width', '100%')
+                    .attr('height', '100%')
+                    .attr('patternUnits', 'objectBoundingBox');    
+            
+            pattern.append('rect')
+                    .attr('class', 'pattern-background')
+                    .attr('x', 0)
+                    .attr('y', 0)
+                    .attr('width', '100%')
+                    .attr('height', '100%');
+
+            pattern.append('rect')
+                    .attr('class', 'pattern-foreground')
+                    .attr('x', 0)
+                    .attr('y', 0)
+                    .attr('width', '100%')
+                    .attr('height', '100%')
+                    .attr('fill', `url(#${inner})`)
+        }
+
+        pattern.select('rect.pattern-background').attr('fill', background);
+    }
+
+    _impl.id = () => id;
+    _impl.self = () => `#${id}`;
+    _impl.size = () => s;
+    _impl.align = (v) => Math.round(s * Math.ceil(v / s));
+
+    // .url() can be used with filter on a SVG component
+    _impl.url = () => `url(#${id})`;
+    
+    // .css() can be used with style on a SVG component
+    _impl.css = () => `fill: ${_impl.url()};`;
+
+    _impl.foreground = function(value) {
+        return arguments.length ? (foreground = value, _impl) : foreground;
+    };
+    
+    _impl.background = function(value) {
+        return arguments.length ? (background = value, _impl) : background;
+    };        
+                 
+    return _impl;    
+
+}
 
 export function diagonals(id, opts) {
     if (opts == null) opts = {};
@@ -23,7 +123,6 @@ export function diagonals(id, opts) {
     let w = opts.width || 3;
     let h = opts.height || 3;
     let a = opts.angle || 45;
-    let i = opts.interval || 4;
     
     let background = 'transparent',
         foreground = display.light.highlight;
@@ -68,25 +167,18 @@ export function diagonals(id, opts) {
                 .attr('fill', foreground);
     }
     
-    _impl.id = function() {
-        return id;
-    };
-    
-    _impl.self = function() { return '#' + id; }
+    _impl.id = () => id;
+    _impl.self = () => `#${id}`;
     
     // .url() can be used with filter on a SVG component
-    _impl.url = function() { return 'url(#' + id + ')'; }
+    _impl.url = () => `url(#${id})`;
     
     // .css() can be used with style on a SVG component
-    _impl.css = function() { return 'fill: ' + _impl.url() + ';'; }
+    _impl.css = () => `fill: ${_impl.url()};`;
     
     _impl.size = function(value) {
         return arguments.length ? (s = value, _impl) : s;
-    };  
-
-    _impl.interval = function(value) {
-        return arguments.length ? (i = value, _impl) : i;
-    };       
+    };     
       
     _impl.width = function(value) {
         return arguments.length ? (w = value, _impl) : w;

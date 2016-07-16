@@ -28,7 +28,8 @@ export {
 export {
   angle as angle,
   patterns as patterns,
-  diagonals as diagonals
+  diagonals as diagonals,
+  highlights as highlights
 } from "./src/patterns";
 
 export {

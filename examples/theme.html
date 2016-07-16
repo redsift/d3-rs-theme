@@ -101,26 +101,47 @@
                   `${svg.self()} rect.highlight { stroke: none;}`
                 ].join('\n'));
                 
-       var pattern = d3_rs_theme.diagonals('pattern-' + theme, d3_rs_theme.patterns.highlight);
-       pattern.foreground(d3_rs_theme.display[theme].highlight);
-       
-       var node = d3.select('#str').call(svg).select(svg.self()).call(pattern).select(svg.child());
+       var highlight = d3_rs_theme.highlights('highlight-' + theme);
+       highlight.foreground(d3_rs_theme.display[theme].highlight);
+
+       var lowlight = d3_rs_theme.highlights('lowlight-' + theme);
+       lowlight.foreground(d3_rs_theme.display[theme].lowlight);
+
+       var node = d3.select('#str').call(svg).select(svg.self()).call(highlight).call(lowlight).select(svg.child());
        
        function draw(d, i) {
         var g = node.append('g').attr('transform', `translate(0, ${i * 50 + 20})`)
         g.append('text').attr('dominant-baseline', 'text-after-edge').text(d);     
         if (d === 'highlight x') {
-          g.append('rect').attr('class', d).attr('x', 0).attr('y', 10.5).attr('width', svg.childWidth()).attr('height', pattern.interval()).attr('fill', pattern.url());
+          g.append('rect').attr('class', d)
+            .attr('x', 0).attr('y', 10.5)
+            .attr('width', highlight.align(svg.childWidth()))
+            .attr('height', Math.round(highlight.size()))
+            .attr('fill', highlight.url());
         } else if (d === 'highlight y') {
-          g.append('rect').attr('class', d).attr('x', 10).attr('y', 0).attr('width', pattern.interval()).attr('height', 4 * pattern.size()).attr('fill', pattern.url());
-        } else if (d === 'highlight area') {
-          g.append('rect').attr('class', d).attr('x', 0).attr('y', 0).attr('width', svg.childWidth()).attr('height', 50).attr('fill', pattern.url());
+          g.append('rect').attr('class', d)
+            .attr('x', 10).attr('y', 4)
+            .attr('width', highlight.align(1))
+            .attr('height', Math.round(4 * highlight.size()))
+            .attr('fill', highlight.url());
+        } else if (d === 'highlight lowlight area') {
+          g.append('rect').attr('class', d)
+            .attr('x', 0).attr('y', 3)
+            .attr('width', highlight.align(svg.childWidth() / 2))
+            .attr('height', highlight.align(50))
+            .attr('fill', highlight.url());
+
+          g.append('rect').attr('class', d)
+            .attr('x', lowlight.align(svg.childWidth() / 2)).attr('y', 3)
+            .attr('width', lowlight.align(svg.childWidth() / 2))
+            .attr('height', lowlight.align(50))
+            .attr('fill', lowlight.url());
         } else { 
           g.append('line').attr('class', d).attr('x1', 0).attr('y1', 0).attr('x2', svg.childWidth()).attr('y2', 0);
         } 
       }
        
-       [ 'data', 'axis', 'grid', 'highlight x', 'highlight y', 'highlight area' ].map(draw);
+       [ 'data', 'axis', 'grid', 'highlight x', 'highlight y', 'highlight lowlight area' ].map(draw);
     }
     
     themes.map(draw_strokes);
@@ -128,14 +149,14 @@
     
     function draw_pal(node, theme, series) {    
 
-    let palHeight = (series.length + 1) * size;
-    let palWidth = d3.max(series, s => s.length) * size + 30;
+      let palHeight = (series.length + 1) * size;
+      let palWidth = d3.max(series, s => s.length) * size + 30;
 
-      var svg = d3_rs_svg.html(`${node}-${theme}`)
+      let svg = d3_rs_svg.html(`${node}-${theme}`)
                 .width(palWidth)
                 .height(palHeight)
                 .background(d3_rs_theme.display[theme].background);
-      var demo = d3.select(`#${node}`).call(svg).select(svg.self()).select(svg.child());
+      let demo = d3.select(`#${node}`).call(svg).select(svg.self()).select(svg.child());
       
       function present(th, x) {
         let cls = 'class-' + x;
@@ -168,7 +189,7 @@
                             
     d3.select('#hal').selectAll('svg').data(themes)
       .append('rect')
-        .attr('fill', d => `url(#pattern-${d})`)
+        .attr('fill', d => `url(#highlight-${d})`)
         .attr('width', (d, i) => containers[i].width())
         .attr('height', (d, i) => containers[i].height());                        
                                
