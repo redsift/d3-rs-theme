@@ -22,7 +22,9 @@ export {
 } from "./src/curves";
 
 export {
-  shadow as shadow
+  shadow,
+  greyscale,
+  emboss
 } from "./src/filters";
 
 export {

@@ -109,6 +109,23 @@ A custom easing function is provided to animate transitions. This is primarily f
 	// set the x value on the rect using the custom duration and easing
 	rect.transition().duration(d3_rs_theme.duration).ease(d3_rs_theme.easing()).attr('x', newValue);
 
+### Filters
+
+SVG filters can be programatically created and applied to elements. Like patterns, the filters need to be injected into the DOM before they can be used.
+
+	// Typically applied using the filter attribute
+	..append('image')
+		.attr('xlink:href', url)
+		.attr('filter', filter.url());
+
+#### greyscale()
+
+Drains an image of color.
+
+#### emboss()
+
+Creates a near monochrome embossed image. Typically used for presenting logo quilts.
+
 ### Other tools
 
 You can create a theme shadow for SVG elements using `d3_rs_theme.shadow()` in a manner similar to patterns.

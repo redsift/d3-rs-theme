@@ -29,8 +29,11 @@
             
     <h3>Curves, default vs Red Sift custom</h3>
     <div id="crv"></div>
-                
-    <h3>Filters & Random</h3>
+
+    <h3>Image Filters</h3>
+    <div id="img"></div>  
+
+    <h3>Shadow Filter & Random</h3>
     <div id="flt"></div>                
                 
     <script src="https://d3js.org/d3.v4.0.0-alpha.35.min.js"></script>
@@ -256,6 +259,48 @@
    
     animate_crv();
     
+    var colors = d3_rs_theme.random(d3_rs_theme.presentation10.standard);
+
+    function demo_img(url, i) {
+      var s = 50,
+          v = 100;
+      var o = (v - s) / 2;    
+
+      var color = colors(url);
+
+      var filter = d3_rs_theme.emboss().color(color);
+
+      var svg = d3_rs_svg.html('img-' + i)
+              .margin(0)
+              .height(v)
+              .width(v)
+              .background(color);
+
+      var demo = d3.select('#img').call(svg).select(svg.self()).call(filter);
+
+      demo.select(svg.child()).append('image')
+          .attr('xlink:href', url)
+          .attr('x', o)
+          .attr('y', o)
+          .attr('width', s)
+          .attr('height', s)
+          .attr('filter', filter.url());
+
+      (function repeat() {    
+      demo.transition().duration(3000).delay(1000)
+            .call(filter.strength(filter.strength() === 0.0 ? 1.0 : 0.0))
+            .on('end', repeat);
+      })();
+    }
+
+    [ 'https://logo.clearbit.com/shazam.com?&size=400', 
+      'https://logo.clearbit.com/www.rightmove.co.uk?&size=400', 
+      'https://logo.clearbit.com/angel.co?&size=400', 
+      'https://logo.clearbit.com/lufthansa.com?&size=400',
+      'https://logo.clearbit.com/pintrest.com?&size=400',
+      'https://logo.clearbit.com/mailchimp.com?size=400' 
+    ].map(demo_img);
+
     function demo_filter(theme) {
       var svg = d3_rs_svg.html('filter-' + theme)
               .height(200)
