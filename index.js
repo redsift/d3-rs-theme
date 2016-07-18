@@ -22,13 +22,16 @@ export {
 } from "./src/curves";
 
 export {
-  shadow as shadow
+  shadow,
+  greyscale,
+  emboss
 } from "./src/filters";
 
 export {
   angle as angle,
   patterns as patterns,
-  diagonals as diagonals
+  diagonals as diagonals,
+  highlights as highlights
 } from "./src/patterns";
 
 export {

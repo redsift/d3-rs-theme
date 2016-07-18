@@ -1,6 +1,6 @@
 {
   "name": "@redsift/d3-rs-theme",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Package for the Red Sift default color palette, fonts, curves and patterns.",
   "keywords": [
     "color",

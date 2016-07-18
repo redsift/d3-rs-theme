@@ -96,7 +96,8 @@ export const display = {
         text: '#262626',
         axis: '#262626',
         grid: '#e0e0e0',
-        highlight: 'rgba(127,127,127,0.3)',
+        highlight: 'rgba(225,16,16,0.5)',
+        lowlight: 'rgba(127,127,127,0.3)',
         shadow: 'rgba(127,127,127,0.4)',
         fillOpacity: 0.33
     },
@@ -105,7 +106,8 @@ export const display = {
         text: '#ffffff',
         axis: '#ffffff',
         grid: '#6d6d6d',
-        highlight: 'rgba(127,127,127,0.5)',
+        highlight: 'rgba(225,16,16,0.5)',
+        lowlight: 'rgba(127,127,127,0.5)',
         shadow: 'rgba(255,255,255,0.4)',
         fillOpacity: 0.33      
     }
