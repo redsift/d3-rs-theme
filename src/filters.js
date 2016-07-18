@@ -2,111 +2,6 @@ import { display, brand } from './palettes'
 
 let COUNT = 1;
 
-export function shadow(id) {
-    
-    let morphRadius = 1,
-        color = display.light.shadow,
-        blurRadius = 3,
-        padding = "10px",
-        width = 100,
-        height = 100;
-    
-    if (id == null) {
-        id = 'filter-shadow-' + COUNT;
-        COUNT++;
-    }
-    
-    function _impl(context) {
-        var selection = context.selection ? context.selection() : context;
-        
-        var defs = selection.select('defs');
-        if (defs.empty()) {
-            defs = selection.append('defs');
-        }
-        
-        let filter = defs.select(_impl.self());
-        if (filter.empty()) {
-            filter = defs
-                        .append('filter')
-                        .attr('id', id);
-
-            filter.append('feMorphology')
-                .attr('operator', 'dilate')
-                .attr('in', 'SourceAlpha')
-                .attr('result', 'TEMPLATE');
-
-            filter.append('feFlood')
-                    .attr('result', 'COLOUR');
-
-            filter.append('feComposite')
-                .attr('in', 'COLOUR')
-                .attr('in2', 'TEMPLATE')
-                .attr('operator', 'in')
-                .attr('result', 'TEMPLATE_COLOUR');
-
-            filter.append('feGaussianBlur')
-                .attr('result', 'BG');
-            
-            let merge = filter.append('feMerge');
-            merge.append('feMergeNode').attr('in', 'BG');
-            merge.append('feMergeNode').attr('in', 'SourceGraphic');
-        }        
-        
-        filter
-            .attr('x', '-' + padding)
-            .attr('y', '-' + padding)
-            .attr('width', width)
-            .attr('height', height);
-
-        filter.select('feMorphology')    
-            .attr('radius', morphRadius);
-
-        filter.select('feFlood')    
-            .attr('flood-color', color)
-
-        filter.select('feGaussianBlur')
-            .attr('stdDeviation', blurRadius);
-    }
-    
-    _impl.id = function() {
-        return id;
-    };
-    
-    _impl.self = function() { return '#' + id; }
-    
-    // .url() can be used with filter on a SVG component
-    _impl.url = function() { return 'url(#' + id + ')'; }
-    
-    // .css() can be used with style on a SVG component
-    _impl.css = function() { return 'filter: ' + _impl.url() + ';'; }
-            
-    _impl.morphRadius = function(value) {
-        return arguments.length ? (morphRadius = value, _impl) : morphRadius;
-    };
-    
-    _impl.color = function(value) {
-        return arguments.length ? (color = value, _impl) : color;
-    };
-    
-    _impl.blurRadius = function(value) {
-        return arguments.length ? (blurRadius = value, _impl) : blurRadius;
-    };
-    
-    _impl.padding = function(value) {
-        return arguments.length ? (padding = value, _impl) : padding;
-    };                  
-
-    _impl.width = function(value) {
-        return arguments.length ? (width = value, _impl) : width;
-    };    
-    
-    _impl.height = function(value) {
-        return arguments.length ? (height = value, _impl) : height;
-    };        
-    
-    return _impl;
-}
-
 function scaffold(id, onetime, dynamic, transitions) {
     function _impl(context) {
         let selection = context.selection ? context.selection() : context,
@@ -151,6 +46,79 @@ function scaffold(id, onetime, dynamic, transitions) {
     return _impl;
 }
 
+export function shadow(id) {
+    
+    let morphRadius = 1,
+        color = display.light.shadow,
+        blurRadius = 3,
+        padding = "10";
+    
+    if (id == null) {
+        id = 'filter-shadow-' + COUNT;
+        COUNT++;
+    }
+    
+    let _impl = scaffold(id, 
+    function onetime(filter) {
+        filter.append('feMorphology')
+            .attr('operator', 'dilate')
+            .attr('in', 'SourceAlpha')
+            .attr('result', 'TEMPLATE');
+
+        filter.append('feFlood')
+                .attr('result', 'COLOUR');
+
+        filter.append('feComposite')
+            .attr('in', 'COLOUR')
+            .attr('in2', 'TEMPLATE')
+            .attr('operator', 'in')
+            .attr('result', 'TEMPLATE_COLOUR');
+
+        filter.append('feGaussianBlur')
+            .attr('result', 'BG');
+        
+        let merge = filter.append('feMerge');
+        merge.append('feMergeNode').attr('in', 'BG');
+        merge.append('feMergeNode').attr('in', 'SourceGraphic');
+    },
+    function dynamic(filter) {
+        filter
+            .attr('x', '-' + padding + '%')
+            .attr('y', '-' + padding + '%')
+            .attr('width', (2*padding + 100) + '%')
+            .attr('height', (2*padding + 100) + '%');
+    },
+    function transition(filter) {
+        filter.select('feMorphology')    
+            .attr('radius', morphRadius);
+
+        filter.select('feFlood')    
+            .attr('flood-color', color)
+
+        filter.select('feGaussianBlur')
+            .attr('stdDeviation', blurRadius);
+    });
+
+    
+    _impl.morphRadius = function(value) {
+        return arguments.length ? (morphRadius = value, _impl) : morphRadius;
+    };
+    
+    _impl.color = function(value) {
+        return arguments.length ? (color = value, _impl) : color;
+    };
+    
+    _impl.blurRadius = function(value) {
+        return arguments.length ? (blurRadius = value, _impl) : blurRadius;
+    };
+    
+    _impl.padding = function(value) {
+        return arguments.length ? (padding = value, _impl) : padding;
+    };                  
+
+    return _impl;
+}
+
 export function greyscale(id) { 
     let strength = 1.0;
 
@@ -164,7 +132,7 @@ export function greyscale(id) {
         filter.append('feColorMatrix')
                 .attr('type', 'matrix');
     },
-    function dynamic(filter) {
+    function dynamic() {
 
     },
     function transition(filter) {
@@ -242,7 +210,7 @@ export function emboss(id) {
                 .attr('in2', 'FILL')
                 .attr('mode', 'multiply');
     },
-    function dynamic(filter) {
+    function dynamic() {
 
     },
     function transition(filter) {
