@@ -1,4 +1,5 @@
 var tape = require("tape"),
+    rng = require("seedrandom")('seed'),
     colors = require("../");
 
 /*
@@ -26,7 +27,7 @@ tape("lightness() generates different rbg at 1.1", function(t) {
 
 
 tape("random() generates different bg", function(t) {
-    var rnd = colors.random(colors.presentation10.standard);
+    var rnd = colors.random(colors.presentation10.standard, rng);
    
     var one = rnd();
     var two = rnd();
@@ -39,7 +40,7 @@ tape("random() generates different bg", function(t) {
 });   
 
 tape("random() generates same bg", function(t) {
-    var rnd = colors.random(colors.presentation10.standard);
+    var rnd = colors.random(colors.presentation10.standard, rng);
     var VAL = 'some long string';
     var one = rnd(VAL);
     var two = rnd(VAL);
@@ -60,7 +61,7 @@ tape("contrasts() correct for the obvious ones", function(t) {
 });
 
 tape("random() generates same bg for a number", function(t) {
-    var rnd = colors.random(colors.presentation10.standard);
+    var rnd = colors.random(colors.presentation10.standard, rng);
     var VAL = 1;
     var one = rnd(VAL);
     var two = rnd(VAL);
