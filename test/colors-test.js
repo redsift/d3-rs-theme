@@ -34,7 +34,7 @@ tape("random() generates different bg", function(t) {
     t.ok(one != null);
     t.ok(two != null);
         
-    t.notEqual(one, two);    
+    t.ok(one != two, `${one} != ${two}`);    
     t.end();    
 });   
 

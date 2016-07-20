@@ -99,7 +99,11 @@ export const display = {
         highlight: 'rgba(225,16,16,0.5)',
         lowlight: 'rgba(127,127,127,0.3)',
         shadow: 'rgba(127,127,127,0.4)',
-        fillOpacity: 0.33
+        fillOpacity: 0.33,
+        negative: {
+            background: 'rgba(0, 0, 0, 0.66)',
+            text: '#ffffff'
+        }
     },
     dark : {
         background: '#333333',    
@@ -109,6 +113,10 @@ export const display = {
         highlight: 'rgba(225,16,16,0.5)',
         lowlight: 'rgba(127,127,127,0.5)',
         shadow: 'rgba(255,255,255,0.4)',
-        fillOpacity: 0.33      
+        fillOpacity: 0.33,      
+        negative: {
+            background: 'rgba(255, 255, 255, 0.66)',
+            text: '#262626'
+        }
     }
 };
