@@ -115,7 +115,7 @@ export const display = {
         shadow: 'rgba(255,255,255,0.4)',
         fillOpacity: 0.33,      
         negative: {
-            background: 'rgba(255, 255, 255, 0.66)',
+            background: 'rgba(255, 255, 255, 0.85)',
             text: '#262626'
         }
     }
