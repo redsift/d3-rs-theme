@@ -1,0 +1,64 @@
+<html>
+  <head>
+    <style>
+      
+    svg {
+      margin: 1em;
+    }
+
+    </style>    
+  </head>
+  <body>
+    
+
+    <h3>Emboss</h3>
+    <div id="img"></div>  
+                
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="//static.redsift.io/reusable/d3-rs-svg/latest/d3-rs-svg.umd-es2015.min.js"></script>
+    <script src="/d3-rs-theme.umd-es2015.min.js"></script>
+    <script>
+
+    'use strict';
+    
+    var colors = d3_rs_theme.random(d3_rs_theme.presentation10.standard);
+
+    function demo_img(url, i) {
+      var s = 50,
+          v = 100;
+      var o = (v - s) / 2;    
+
+      var color = colors(url);
+
+      var filter = d3_rs_theme.emboss().color(color);
+
+      var svg = d3_rs_svg.html('img-' + i)
+              .margin(0)
+              .height(v)
+              .width(v)
+              .background(color);
+
+      var demo = d3.select('#img').call(svg).select(svg.self()).call(filter);
+
+      demo.select(svg.child()).append('image')
+          .attr('xlink:href', url)
+          .attr('x', o)
+          .attr('y', o)
+          .attr('width', s)
+          .attr('height', s)
+          .attr('filter', filter.url());
+
+    }
+
+    [ 'https://logo.clearbit.com/shazam.com?&size=400', 
+      'https://logo.clearbit.com/www.rightmove.co.uk?&size=400', 
+      'https://logo.clearbit.com/angel.co?&size=400', 
+      'https://logo.clearbit.com/lufthansa.com?&size=400',
+      'https://logo.clearbit.com/pintrest.com?&size=400',
+      'https://logo.clearbit.com/mailchimp.com?size=400' 
+    ].map(demo_img);
+
+    
+    </script>
+  </body>
+</html>

@@ -158,7 +158,6 @@ export function greyscale(id) {
 export function emboss(id) { 
     let color = brand.standard[brand.names.grey],
         blur = 0.6,
-        sharpness = -0.1,
         strength = 0.8;
 
     if (id == null) {
@@ -179,23 +178,16 @@ export function emboss(id) {
         [ 'feFuncR', 'feFuncG', 'feFuncB' ].forEach(function (ch) {
             transfer.append(ch)
                     .attr('type', 'discrete')
-                    .attr('tableValues', `0.0 0.08 0.75 1.0`);
+                    .attr('tableValues', `0.0 0.18 0.75 1.0`);
         });
     
         filter.append('feGaussianBlur')
                 .attr('stdDeviation', blur);
 
         filter.append('feComponentTransfer')
+                .attr('result', 'TRANSFER')
                 .append('feFuncA')
                     .attr('type', 'discrete');
-
-        filter.append('feConvolveMatrix')
-                .attr('result', 'SHARP')
-                .attr('order', '3, 3')
-                .attr('preserveAlpha', true)
-                .attr('kernelMatrix', ` 1 -1  1 ` +
-                                      `-1  ${sharpness} -1 ` +
-                                      ` 1 -1  1`);
 
         filter.append('feFlood')
                 .attr('rect', '')
@@ -206,7 +198,7 @@ export function emboss(id) {
                 .attr('result', 'FILL');
 
         filter.append('feBlend')
-                .attr('in', 'SHARP')
+                .attr('in', 'TRANSFER')
                 .attr('in2', 'FILL')
                 .attr('mode', 'multiply');
     },
