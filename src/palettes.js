@@ -62,14 +62,14 @@ export const presentation10 = {
 }
 
 const brandstd = [
-    '#e11010', // red
+    '#ed1651', // red - was e11010
     '#0ab93a', // green
     '#1671f4', // blue
     '#cacaca'  // grey
 ]
 
 const branddark = [
-    '#6a0000', // red
+    '#5f041f', // red - was 6a0000
     '#087927', // green
     '#0b49a2', // blue
     '#828282'  // grey
