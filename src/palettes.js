@@ -41,6 +41,29 @@ const presentation10light = [
     '#addbf0' // Blue 
 ];
 
+const presentation10inclusive = [
+    '#06A4B5',
+    '#880E4F',
+    '#FF5722',
+    '#0097A7',
+    '#AD1457',
+    '#18048C',
+    '#651FFF',
+    '#FF3D00',
+    '#00838F',
+    '#C2185B',
+    '#2D1B93',
+    '#A30E00',
+    '#E91E63',
+    '#500BE8',
+    '#DD2C00',
+    '#0B6E7B',
+    '#D81B60',
+    '#3820B9',
+    '#C31900',
+    '#005662'
+  ];
+
 const names10 = {
     green:  0,
     pink:   1,
@@ -58,6 +81,7 @@ export const presentation10 = {
     standard: presentation10std,
     darker: presentation10dark,
     lighter: presentation10light,
+    inclusive: presentation10inclusive,
     names: names10    
 }
 
