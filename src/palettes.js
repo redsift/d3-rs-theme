@@ -104,9 +104,12 @@ export const presentation10 = {
     standard: presentation10std,
     darker: presentation10dark,
     lighter: presentation10light,
-    cheerios: presentation20cheerios,
     names: names10, 
-    names20 
+}
+
+export const presentation20 = {
+    cheerios: presentation20cheerios,
+    names: names20 
 }
 
 const brandstd = [
