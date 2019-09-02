@@ -41,7 +41,7 @@ const presentation10light = [
     '#addbf0' // Blue 
 ];
 
-const presentation10inclusive = [
+const presentation20cheerios = [
     '#06A4B5',
     '#880E4F',
     '#FF5722',
@@ -62,7 +62,7 @@ const presentation10inclusive = [
     '#3820B9',
     '#C31900',
     '#005662'
-  ];
+];
 
 const names10 = {
     green:  0,
@@ -77,12 +77,36 @@ const names10 = {
     blue:   9
 }
 
+const names20 = {
+    aqua1: 0,
+    magenta5: 1,
+    orange1: 2,        
+    aqua2: 3,
+    magenta4: 4,
+    purple5: 5,
+    aqua3: 6,
+    orange2: 7,
+    aqua4: 8,
+    magenta3: 9,
+    purple4: 10,
+    orange5: 11,
+    magenta1: 12,
+    purple2: 13,
+    orange3: 14,
+    aqua5: 15,
+    magenta2: 16,
+    purple3: 17,
+    orange4: 18,
+    aqua6: 19
+}
+
 export const presentation10 = {
     standard: presentation10std,
     darker: presentation10dark,
     lighter: presentation10light,
-    inclusive: presentation10inclusive,
-    names: names10    
+    cheerios: presentation20cheerios,
+    names: names10, 
+    names20 
 }
 
 const brandstd = [
