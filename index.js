@@ -12,6 +12,7 @@ export {
 export {
   themes as themes,
   presentation10 as presentation10,
+  presentation20 as presentation20,
   brand as brand,
   display as display
 } from "./src/palettes";
