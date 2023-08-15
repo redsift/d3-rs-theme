@@ -56,7 +56,7 @@
     "vinyl": "^3.0.0",
     "vinyl-buffer": "^1.0.1",
     "vinyl-source-stream": "^2.0.0",
-    "yargs": "^4.8.0"
+    "yargs": "^17.7.2"
   },
   "overrides": {
     "chokidar": "3.5.3",
