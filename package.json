@@ -1,6 +1,6 @@
 {
   "name": "@redsift/d3-rs-theme",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description": "Package for the Red Sift default color palette, fonts, curves and patterns.",
   "keywords": [
     "color",
@@ -21,33 +21,35 @@
   },
   "scripts": {
     "serve": "gulp -o d3-rs-theme serve",
-    "build": "gulp -o d3-rs-theme build",
+    "prepublish": "npm run clean; npm run build",
+    "build": "npm run clean; node ./node_modules/@redsift/rollup-bundler/src/index.js bundle.config.js",
+    "clean": "rm -rf dist",
     "pretest": "npm outdated && npm run build",
-    "test": "tape 'test/**/*-test.js' && eslint index.js src",
-    "prepublish": "npm run build"
+    "test": "tape 'test/**/*-test.js' && eslint index.js src"
   },
   "dependencies": {
     "bezier-easing": "^2.0.3"
   },
   "devDependencies": {
-    "tape": "^4.6.0",
+    "@redsift/rollup-bundler": "^2.0.2",
+    "@redsift/tape-reel": "~0.1.1",
     "seedrandom": "^2.4.2",
     "browser-sync": "^2.13.0",
     "del": "^2.2.1",
     "eslint": "^3.0.1",
-    "gulp": "^3.9.1",
-    "gulp-rename": "^1.2.2",
-    "gulp-sourcemaps": "^2.0.0-alpha",
-    "gulp-uglify": "^2.0.0",
-    "gulp-util": "^3.0.7",
-    "rollup": "^0.34.1",
-    "rollup-plugin-buble": "^0.12.1",
-    "rollup-plugin-json": "^2.0.0",
-    "rollup-plugin-node-resolve": "^2.0.0",
-    "rollup-plugin-commonjs": "^3.1.0",
-    "rollup-stream": "^1.11.0",
-    "vinyl-buffer": "^1.0.0",
-    "vinyl-source-stream": "^1.1.0",
+    "gulp": "^4.0.2",
+    "gulp-rename": "^2.0.0",
+    "gulp-sourcemaps": "^3.0.0",
+    "gulp-uglify": "^3.0.2",
+    "gulp-util": "^3.0.8",
+    "vinyl-buffer": "^1.0.1",
+    "vinyl-source-stream": "^2.0.0",
     "yargs": "^4.8.0"
+  },
+  "overrides": {
+    "lodash": "4.17.21",
+    "lodash.template": "4.5.0",
+    "chokidar": "3.5.3",
+    "glob-parent": "6.0.2"
   }
 }
