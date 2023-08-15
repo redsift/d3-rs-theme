@@ -24,7 +24,7 @@
     "prepublish": "npm run clean; npm run build",
     "build": "npm run clean; rollup-bundler",
     "clean": "rm -rf dist",
-    "pretest": "(npm outdated || true) && npm run build",
+    "pretest": "(npm outdated || true) && npm run build && gulp -o d3-rs-theme",
     "test": "tape 'test/**/*-test.js' && eslint src"
   },
   "dependencies": {
