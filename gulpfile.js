@@ -1,121 +1,125 @@
-'use strict';
+"use strict";
 
-var argv = require('yargs')
-                .usage('Usage: $0 -o [file] -g [globals] task')
-                .demand(['o'])
-                .describe('o', 'Output file')
-                .argv;
-                
-var gulp = require('gulp');
-var del = require('del');
-var util = require('gulp-util');
-var rollup = require('rollup-stream'); 
-var uglify = require('gulp-uglify');
-var browserSync = require('browser-sync').create();
-var buble = require('rollup-plugin-buble');
-var nodeResolve = require('rollup-plugin-node-resolve');
-var sourcemaps = require('gulp-sourcemaps');
-var source = require('vinyl-source-stream');
-var buffer = require('vinyl-buffer');
-var rename = require('gulp-rename');
-var commonjs = require('rollup-plugin-commonjs');
-var json = require('rollup-plugin-json');
+var argv = require("yargs")
+  .usage("Usage: $0 -o [file] -g [globals] task")
+  .demand(["o"])
+  .describe("o", "Output file").argv;
+
+var gulp = require("gulp");
+var del = require("del");
+var util = require("gulp-util");
+var rollup = require("rollup-stream");
+var uglify = require("gulp-uglify");
+var browserSync = require("browser-sync").create();
+var buble = require("rollup-plugin-buble");
+var nodeResolve = require("rollup-plugin-node-resolve");
+var sourcemaps = require("gulp-sourcemaps");
+var source = require("vinyl-source-stream");
+var buffer = require("vinyl-buffer");
+var rename = require("gulp-rename");
+var commonjs = require("rollup-plugin-commonjs");
+var json = require("rollup-plugin-json");
 
 var outputFilename = argv.o;
 var globals = [];
 if (argv.g) {
-    globals = Array.isArray(argv.g) ? argv.g : [ argv.g ]
+  globals = Array.isArray(argv.g) ? argv.g : [argv.g];
 }
+
+var skips = [];
+
 var globalMap = {};
 globals.forEach((d) => {
-    var target = 'd3';
-    if (d.indexOf('@redsift/d3-rs') !== -1) {
-        var trim = d;
-        var paths = trim.split('/');
-        if (paths.length > 1) {
-            trim = paths.slice(1, paths.length).join('/');
-        }
-        target = trim.replace(/-/g, '_');
+  var target = null;
+  if (d.indexOf("@redsift/d3-rs") !== -1) {
+    var trim = d;
+    var paths = trim.split("/");
+    if (paths.length > 1) {
+      trim = paths.slice(1, paths.length).join("/");
     }
+    target = trim.replace(/-/g, "_");
+  } else if (d.indexOf("d3-") === 0) {
+    target = "d3";
+    skips.push(d);
+  } else {
+    throw new Error("Unknown global type: " + d);
+  }
 
-    globalMap[d] = target;
+  globalMap[d] = target;
 });
 
 var task = {};
 
-gulp.task('clean', () => del([ 'distribution/**' ]));  
+gulp.task("clean", () => del(["distribution/**"]));
 
-gulp.task('umd', task.umd = () => {  
-  return rollup({
-            moduleName: outputFilename.replace(/-/g, '_'),
-            globals: globalMap,
-            entry: 'index.js',
-            format: 'umd',
-            sourceMap: true,
-            plugins: [  
-                        json({
-                            include: [ '**/package.json' , 'node_modules/**/*.json' ], 
-                            exclude: [  ]
-                        }),
-                        nodeResolve({
-                            // use "jsnext:main" if possible
-                            // – see https://github.com/rollup/rollup/wiki/jsnext:main
-                            jsnext: true,  // Default: false
+gulp.task(
+  "umd",
+  (task.umd = async () => {
+    return rollup({
+      name: outputFilename.replace(/-/g, "_"),
+      globals: globalMap,
+      input: "src/index.js",
+      format: "umd",
+      sourcemap: true,
+      plugins: [
+        json({
+          include: ["**/package.json", "node_modules/**/*.json"],
+          exclude: [],
+        }),
+        nodeResolve({
+          skip: skips,
+          // use "jsnext:main" if possible
+          // – see https://github.com/rollup/rollup/wiki/jsnext:main
+          jsnext: true, // Default: false
 
-                            // use "main" field or index.js, even if it's not an ES6 module
-                            // (needs to be converted from CommonJS to ES6
-                            // – see https://github.com/rollup/rollup-plugin-commonjs
-                            main: true,  // Default: true
+          // use "main" field or index.js, even if it's not an ES6 module
+          // (needs to be converted from CommonJS to ES6
+          // – see https://github.com/rollup/rollup-plugin-commonjs
+          main: true, // Default: true
 
-                            // if there's something your bundle requires that you DON'T
-                            // want to include, add it to 'skip'. Local and relative imports
-                            // can be skipped by giving the full filepath. E.g., 
-                            // `path.resolve('src/relative-dependency.js')`
-                            skip: [ './index.js' ],  // Default: []
+          // not all files you want to resolve are .js files
+          extensions: [".js"], // Default: ['.js']
 
-                            // some package.json files have a `browser` field which
-                            // specifies alternative files to load for people bundling
-                            // for the browser. If that's you, use this option, otherwise
-                            // pkg.browser will be ignored
-                            browser: true,  // Default: false
+          // whether to prefer built-in modules (e.g. `fs`, `path`) or
+          // local ones with the same names
+          preferBuiltins: false, // Default: true
+        }),
+        commonjs(),
+        buble(),
+      ],
+    })
+      .pipe(source("main.js", "./src"))
+      .pipe(buffer())
+      .pipe(sourcemaps.init({ loadMaps: true }))
+      .pipe(rename({ basename: outputFilename }))
+      .pipe(rename({ suffix: ".umd-es2015" }))
+      .pipe(gulp.dest("distribution/"))
+      .pipe(uglify())
+      .pipe(rename({ suffix: ".min" }))
+      .pipe(sourcemaps.write("."))
+      .pipe(gulp.dest("distribution/"));
+  })
+);
 
-                            // not all files you want to resolve are .js files
-                            extensions: [ '.js' ],  // Default: ['.js']
-
-                            // whether to prefer built-in modules (e.g. `fs`, `path`) or
-                            // local ones with the same names
-                            preferBuiltins: false  // Default: true
-                        }),  
-                        commonjs(),                     
-                        buble()  ]
-        })
-        .pipe(source('main.js', './src'))
-        .pipe(buffer())
-        .pipe(sourcemaps.init({ loadMaps: true }))
-        .pipe(rename({basename: outputFilename}))
-        .pipe(rename({suffix: '.umd-es2015'}))
-        .pipe(gulp.dest('distribution/'))
-        .pipe(uglify())
-        .pipe(rename({suffix: '.min'}))
-        .pipe(sourcemaps.write('.'))
-        .pipe(gulp.dest('distribution/'));
+gulp.task("browser-sync", function () {
+  browserSync.init({
+    server: {
+      baseDir: ["./examples", "./distribution"],
+      directory: true,
+    },
+  });
 });
 
-gulp.task('browser-sync', function() {
-    browserSync.init({
-        server: {
-            baseDir: [ './examples', './distribution' ],
-            directory: true
-        }
-    });
+gulp.task("build", gulp.series(["clean"]), task.umd);
+
+gulp.task("default", gulp.series(["umd"]));
+
+gulp.task("serve", gulp.series(["default", "browser-sync"]), async function () {
+  gulp.watch(["./*.js", "./src/*.js"], ["umd"]);
+  gulp
+    .watch("./distribution/*.js")
+    .on("change", () => browserSync.reload("*.js"));
+  gulp
+    .watch("./examples/**/*.html")
+    .on("change", () => browserSync.reload("*.html"));
 });
-
-gulp.task('serve', ['default', 'browser-sync'], function() {
-    gulp.watch(['./*.js', './src/*.js'], [ 'umd' ]);
-    gulp.watch('./distribution/*.js').on('change', () => browserSync.reload('*.js'));
-    gulp.watch('./examples/**/*.html').on('change', () => browserSync.reload('*.html'));
-});
-
-gulp.task('build', [ 'clean' ], task.umd);
-
-gulp.task('default', [ 'umd' ]);

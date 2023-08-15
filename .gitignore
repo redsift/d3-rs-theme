@@ -3,3 +3,4 @@ build/
 distribution/
 node_modules
 npm-debug.log
+dist
