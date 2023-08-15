@@ -1,45 +1,46 @@
 export {
   version
-} from "./package.json"
+} from "../package.json"
 
 export {
   transform as transform,
   random as random,
   contrasts as contrasts,
-  sort as sort  
-} from "./src/colors";
+  sort as sort
+} from "./colors";
 
 export {
   themes as themes,
   presentation10 as presentation10,
+  presentation20 as presentation20,
   brand as brand,
   display as display
-} from "./src/palettes";
+} from "./palettes";
 
 export {
   duration as duration,
   easing as easing
-} from "./src/curves";
+} from "./curves";
 
 export {
   shadow,
   greyscale,
   emboss
-} from "./src/filters";
+} from "./filters";
 
 export {
   angle as angle,
   patterns as patterns,
   diagonals as diagonals,
   highlights as highlights
-} from "./src/patterns";
+} from "./patterns";
 
 export {
   widths as widths,
   dashes as dashes
-} from "./src/stroke";
+} from "./stroke";
 
 
 export {
   fonts as fonts
-} from "./src/fonts";
+} from "./fonts";

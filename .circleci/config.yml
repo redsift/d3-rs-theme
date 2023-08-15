@@ -1,0 +1,25 @@
+version: 2.1
+
+jobs:
+  build:
+    docker:
+      - image: cimg/node:16.20.2-browsers
+    steps:
+      - checkout
+      - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+      - run: npm ci
+      - run: npm run test
+      - run:
+          command: |
+            b=(${CIRCLE_BRANCH/-/ })
+            if [ $b == "release" ]; then
+              echo "Publishing to NPM"
+              npm publish --access=public
+            fi
+
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build:
+          context: org-global
