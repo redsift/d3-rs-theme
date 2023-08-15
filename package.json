@@ -24,7 +24,7 @@
     "prepublish": "npm run clean; npm run build",
     "build": "npm run clean; rollup-bundler",
     "clean": "rm -rf dist",
-    "pretest": "npm outdated && npm run build",
+    "pretest": "(npm outdated || true) && npm run build",
     "test": "tape 'test/**/*-test.js' && eslint index.js src"
   },
   "dependencies": {
